@@ -1129,7 +1129,7 @@ button {
 
 .social-layout {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 320px;
+  grid-template-columns: minmax(0, 1fr) 260px;
   gap: 14px;
 }
 
@@ -1140,10 +1140,9 @@ button {
   padding: 16px;
 }
 
-.activity-feed,
 .viber-list {
   display: grid;
-  gap: 12px;
+  gap: 9px;
 }
 
 .recommendation-feed {
@@ -1151,6 +1150,19 @@ button {
   grid-auto-flow: column;
   grid-auto-columns: clamp(300px, 32vw, 380px);
   gap: 14px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding-bottom: 10px;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: thin;
+  -webkit-overflow-scrolling: touch;
+}
+
+.activity-feed {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: clamp(240px, 26vw, 320px);
+  gap: 12px;
   overflow-x: auto;
   overflow-y: hidden;
   padding-bottom: 10px;
@@ -1243,6 +1255,19 @@ button {
   line-height: 1.4;
 }
 
+.viber-card span:not(.status-dot):not(.trust-meter),
+.viber-card strong,
+.viber-card p {
+  min-width: 0;
+}
+
+.viber-card p {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 12px;
+}
+
 .recommendation-body p {
   display: -webkit-box;
   overflow: hidden;
@@ -1296,12 +1321,12 @@ button {
   background: var(--ink);
 }
 
-.activity-feed {
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-}
-
 .activity-card {
-  padding: 14px;
+  min-height: 166px;
+  padding: 13px;
+  display: grid;
+  align-content: space-between;
+  scroll-snap-align: start;
 }
 
 .activity-card.is-approved {
@@ -1314,8 +1339,15 @@ button {
   display: block;
 }
 
+.activity-card p {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
 .activity-actions {
-  margin-top: 14px;
+  margin-top: 12px;
 }
 
 .activity-approve {
@@ -1338,8 +1370,8 @@ button {
   display: flex;
   align-items: baseline;
   justify-content: space-between;
-  gap: 12px;
-  margin-bottom: 12px;
+  gap: 8px;
+  margin-bottom: 10px;
 }
 
 .mini-head span {
@@ -1349,28 +1381,29 @@ button {
 
 .viber-card {
   display: grid;
-  grid-template-columns: 44px 1fr auto;
-  gap: 11px;
+  grid-template-columns: 36px minmax(0, 1fr) auto;
+  gap: 9px;
   align-items: center;
-  padding: 11px;
+  padding: 9px;
 }
 
 .viber-avatar {
-  width: 44px;
-  height: 44px;
+  width: 36px;
+  height: 36px;
   border-radius: var(--radius);
   display: grid;
   place-items: center;
   color: #08090d;
   background: var(--viber-bg);
   font-weight: 900;
+  font-size: 12px;
 }
 
 .trust-meter {
   display: block;
   width: 100%;
   height: 5px;
-  margin-top: 9px;
+  margin-top: 7px;
   border-radius: 999px;
   background: rgba(255, 255, 255, 0.14);
   overflow: hidden;
@@ -1384,8 +1417,8 @@ button {
 }
 
 .status-dot {
-  width: 10px;
-  height: 10px;
+  width: 8px;
+  height: 8px;
   border-radius: 999px;
   background: var(--accent-2);
   box-shadow: 0 0 0 4px rgba(55, 214, 181, 0.12);
@@ -2189,7 +2222,7 @@ button {
   }
 
   .activity-feed {
-    grid-template-columns: 1fr;
+    grid-auto-columns: minmax(240px, 72vw);
   }
 
   .ux-case-hero,
