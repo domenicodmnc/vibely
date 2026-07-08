@@ -1,0 +1,1173 @@
+const profileView = document.querySelector("#profileView");
+const moodEntryView = document.querySelector("#moodEntryView");
+const builderView = document.querySelector("#builderView");
+const homeView = document.querySelector("#homeView");
+const profileGreeting = document.querySelector("#profileGreeting");
+const rankingRow = document.querySelector("#rankingRow");
+const posterGrid = document.querySelector("#posterGrid");
+const searchInput = document.querySelector("#searchInput");
+const drawer = document.querySelector("#detailDrawer");
+const drawerPoster = document.querySelector("#drawerPoster");
+const drawerType = document.querySelector("#drawerType");
+const drawerTitle = document.querySelector("#drawerTitle");
+const drawerDescription = document.querySelector("#drawerDescription");
+const drawerPlayButton = document.querySelector("#drawerPlayButton");
+const drawerRecommendButton = document.querySelector("#drawerRecommendButton");
+const recommendationFeed = document.querySelector("#recommendationFeed");
+const activityFeed = document.querySelector("#activityFeed");
+const viberList = document.querySelector("#viberList");
+const viberCount = document.querySelector("#viberCount");
+const playerOverlay = document.querySelector("#playerOverlay");
+const playerArt = document.querySelector("#playerArt");
+const playerTitle = document.querySelector("#playerTitle");
+const playerProgress = document.querySelector("#playerProgress");
+const ratingNotification = document.querySelector("#ratingNotification");
+const ratingTitle = document.querySelector("#ratingTitle");
+const starPicker = document.querySelector("#starPicker");
+const phoneMoodPicker = document.querySelector("#phoneMoodPicker");
+const phoneViberPicker = document.querySelector("#phoneViberPicker");
+const recommendationNote = document.querySelector("#recommendationNote");
+const entryMoodPicker = document.querySelector("#entryMoodPicker");
+const tvRatingOverlay = document.querySelector("#tvRatingOverlay");
+const tvRatingTitle = document.querySelector("#tvRatingTitle");
+const tvStarPicker = document.querySelector("#tvStarPicker");
+const tvMoodPicker = document.querySelector("#tvMoodPicker");
+const tvViberPicker = document.querySelector("#tvViberPicker");
+const builderName = document.querySelector("#builderName");
+const builderForm = document.querySelector("#builderForm");
+const trustBuilderList = document.querySelector("#trustBuilderList");
+const recommendationMode = document.querySelector("#recommendationMode");
+const previewAvatar = document.querySelector("#previewAvatar");
+const previewName = document.querySelector("#previewName");
+const previewSummary = document.querySelector("#previewSummary");
+const communitySection = document.querySelector("#communitySection");
+const appToast = document.querySelector("#appToast");
+
+let activeFilter = "all";
+let activeMood = "all";
+let query = "";
+let currentProfile = "Filippo";
+let pendingProfile = "Filippo";
+let activeTitle = "After Midnight";
+let pendingTitle = "After Midnight";
+let selectedRating = 4;
+let selectedMoods = ["deep"];
+let sessionMoods = [];
+let selectedViberName = "Elisa";
+let activeRatingSurface = "phone";
+let builderReturnView = "profiles";
+let toastTimer;
+
+const storageKey = "vibely-mvp-community-v1";
+const profileStorageKey = "vibely-mvp-viber-profile-v1";
+const maxMoodSelection = 3;
+const moodOptions = [
+  { id: "chill", label: "Chill", example: "Weekend leggero", color: "linear-gradient(135deg, #25324f, #37d6b5)" },
+  { id: "comfort", label: "Comfort", example: "Caldo e sicuro", color: "linear-gradient(135deg, #2c2f18, #f2c14e)" },
+  { id: "deep", label: "Deep", example: "Lento ma intenso", color: "linear-gradient(135deg, #151515, #607d8b)" },
+  { id: "dark", label: "Dark", example: "Teso e notturno", color: "linear-gradient(135deg, #0f2027, #e7415f)" },
+  { id: "adrenaline", label: "Adrenalina", example: "Partita o action", color: "linear-gradient(135deg, #12351f, #f2c14e)" },
+  { id: "romantic", label: "Romantico", example: "Connessioni morbide", color: "linear-gradient(135deg, #3d1320, #d5a7ff)" },
+  { id: "mindblown", label: "Mind-blown", example: "Sci-fi e twist", color: "linear-gradient(135deg, #101827, #5c6dff)" },
+  { id: "nostalgic", label: "Nostalgico", example: "Ritorni e memoria", color: "linear-gradient(135deg, #144d52, #ff8a66)" }
+];
+const moodIds = moodOptions.map((mood) => mood.id);
+
+const vibers = [
+  { name: "Elisa", initials: "EL", mood: "deep", trust: 96, relation: "Cinema nights", status: "online", color: "linear-gradient(135deg, #d5a7ff, #5c6dff)" },
+  { name: "Serena", initials: "SE", mood: "chill", trust: 91, relation: "Stessi gusti", status: "online", color: "linear-gradient(135deg, #37d6b5, #f2c14e)" },
+  { name: "Dario", initials: "DA", mood: "adrenaline", trust: 84, relation: "Sport e action", status: "away", color: "linear-gradient(135deg, #e7415f, #ff8a66)" },
+  { name: "Carol", initials: "CA", mood: "chill", trust: 78, relation: "Scoperte leggere", status: "online", color: "linear-gradient(135deg, #8aa9b8, #37d6b5)" }
+];
+
+let viberProfile = loadViberProfile();
+applyViberProfile(viberProfile);
+
+const items = [
+  {
+    title: "After Midnight",
+    type: "series",
+    label: "Serie thriller",
+    mood: "dark",
+    moods: ["dark", "deep"],
+    gradient: "linear-gradient(135deg, #19334d, #e7415f)",
+    description: "Una serie notturna tra mistero, amicizie fragili e una citta piena di segreti."
+  },
+  {
+    title: "Low Tide",
+    type: "film",
+    label: "Film drama",
+    mood: "nostalgic",
+    moods: ["nostalgic", "chill"],
+    gradient: "linear-gradient(135deg, #144d52, #37d6b5)",
+    description: "Un ritorno al mare riapre vecchie promesse e scelte lasciate in sospeso."
+  },
+  {
+    title: "Final Whistle",
+    type: "sport",
+    label: "Sport live",
+    mood: "adrenaline",
+    moods: ["adrenaline"],
+    gradient: "linear-gradient(135deg, #12351f, #f2c14e)",
+    description: "La rivalita piu accesa della stagione raccontata dentro e fuori dal campo."
+  },
+  {
+    title: "Neon Kitchen",
+    type: "series",
+    label: "Docuserie",
+    mood: "comfort",
+    moods: ["comfort", "chill"],
+    gradient: "linear-gradient(135deg, #42245b, #ff8a66)",
+    description: "Chef emergenti, cucine minuscole e menu che cambiano quartiere dopo quartiere."
+  },
+  {
+    title: "Orbit City",
+    type: "film",
+    label: "Sci-fi",
+    mood: "mindblown",
+    moods: ["mindblown", "deep"],
+    gradient: "linear-gradient(135deg, #101827, #5c6dff)",
+    description: "Un ingegnere scopre che la citta orbitale in cui vive sta nascondendo un secondo sole."
+  },
+  {
+    title: "Run Club",
+    type: "series",
+    label: "Reality",
+    mood: "adrenaline",
+    moods: ["adrenaline"],
+    gradient: "linear-gradient(135deg, #3d1320, #e7415f)",
+    description: "Cinque runner preparano una gara impossibile mentre provano a rimettere ordine nelle loro vite."
+  },
+  {
+    title: "Soft Signal",
+    type: "film",
+    label: "Romance",
+    mood: "romantic",
+    moods: ["romantic", "chill"],
+    gradient: "linear-gradient(135deg, #262b37, #d5a7ff)",
+    description: "Una radio indipendente diventa il punto d'incontro per due persone che non si sono mai viste."
+  },
+  {
+    title: "Cargo 17",
+    type: "series",
+    label: "Action",
+    mood: "adrenaline",
+    moods: ["adrenaline", "dark"],
+    gradient: "linear-gradient(135deg, #2c2f18, #d0f016)",
+    description: "Un equipaggio trasporta l'unico carico che nessuno dovrebbe mai aprire."
+  },
+  {
+    title: "Glass House",
+    type: "film",
+    label: "Mystery",
+    mood: "dark",
+    moods: ["dark", "deep"],
+    gradient: "linear-gradient(135deg, #0f2027, #8aa9b8)",
+    description: "Una villa trasparente, una cena di famiglia e una verita che tutti vedono ma nessuno nomina."
+  },
+  {
+    title: "Street Finals",
+    type: "sport",
+    label: "Sport",
+    mood: "adrenaline",
+    moods: ["adrenaline"],
+    gradient: "linear-gradient(135deg, #1c2333, #ffb703)",
+    description: "Talenti di strada competono in una finale urbana dove ogni azione pesa."
+  },
+  {
+    title: "Quiet Room",
+    type: "series",
+    label: "Drama",
+    mood: "deep",
+    moods: ["deep"],
+    gradient: "linear-gradient(135deg, #151515, #607d8b)",
+    description: "In uno studio di terapia, ogni episodio svela un dettaglio che cambia tutta la storia."
+  },
+  {
+    title: "Weekend Mode",
+    type: "film",
+    label: "Comedy",
+    mood: "comfort",
+    moods: ["comfort", "chill"],
+    gradient: "linear-gradient(135deg, #25324f, #37d6b5)",
+    description: "Tre amici provano a staccare da tutto, ma il fine settimana ha altri piani."
+  }
+];
+
+const coverDetails = {
+  "After Midnight": {
+    code: "AM",
+    kicker: "Night thriller",
+    accent: "#e7415f",
+    ink: "#f6f8ff",
+    texture: "linear-gradient(150deg, rgba(255,255,255,0.18), transparent 34%), repeating-linear-gradient(90deg, rgba(255,255,255,0.1) 0 1px, transparent 1px 34px)"
+  },
+  "Low Tide": {
+    code: "LT",
+    kicker: "Coastal drama",
+    accent: "#37d6b5",
+    ink: "#f7fffb",
+    texture: "radial-gradient(circle at 24% 32%, rgba(255,255,255,0.24), transparent 18%), linear-gradient(0deg, rgba(7,26,32,0.66), transparent 58%)"
+  },
+  "Final Whistle": {
+    code: "90",
+    kicker: "Last minute",
+    accent: "#f2c14e",
+    ink: "#fff8df",
+    texture: "repeating-linear-gradient(0deg, rgba(255,255,255,0.12) 0 2px, transparent 2px 26px), radial-gradient(circle at 76% 24%, rgba(242,193,78,0.34), transparent 22%)"
+  },
+  "Neon Kitchen": {
+    code: "NK",
+    kicker: "Food stories",
+    accent: "#ff8a66",
+    ink: "#fff3ee",
+    texture: "radial-gradient(circle at 72% 20%, rgba(255,138,102,0.5), transparent 20%), repeating-linear-gradient(135deg, rgba(255,255,255,0.09) 0 1px, transparent 1px 18px)"
+  },
+  "Orbit City": {
+    code: "OC",
+    kicker: "Sci-fi feature",
+    accent: "#8aa9ff",
+    ink: "#f3f6ff",
+    texture: "radial-gradient(circle at 72% 30%, rgba(255,255,255,0.5), transparent 8%), radial-gradient(circle at 50% 54%, rgba(92,109,255,0.42), transparent 28%)"
+  },
+  "Run Club": {
+    code: "RC",
+    kicker: "Reality sprint",
+    accent: "#e7415f",
+    ink: "#fff5f7",
+    texture: "linear-gradient(115deg, transparent 0 42%, rgba(255,255,255,0.16) 42% 46%, transparent 46%), repeating-linear-gradient(90deg, rgba(255,255,255,0.08) 0 2px, transparent 2px 30px)"
+  },
+  "Soft Signal": {
+    code: "SS",
+    kicker: "Romance",
+    accent: "#d5a7ff",
+    ink: "#fff8ff",
+    texture: "radial-gradient(circle at 25% 26%, rgba(213,167,255,0.38), transparent 20%), linear-gradient(145deg, rgba(255,255,255,0.12), transparent 42%)"
+  },
+  "Cargo 17": {
+    code: "17",
+    kicker: "Action serial",
+    accent: "#d0f016",
+    ink: "#faffdf",
+    texture: "repeating-linear-gradient(45deg, rgba(255,255,255,0.12) 0 2px, transparent 2px 18px), linear-gradient(180deg, transparent, rgba(0,0,0,0.52))"
+  },
+  "Glass House": {
+    code: "GH",
+    kicker: "Mystery",
+    accent: "#8aa9b8",
+    ink: "#f5fbff",
+    texture: "linear-gradient(125deg, rgba(255,255,255,0.22), transparent 28%), repeating-linear-gradient(90deg, rgba(255,255,255,0.13) 0 1px, transparent 1px 46px)"
+  },
+  "Street Finals": {
+    code: "SF",
+    kicker: "Urban sport",
+    accent: "#ffb703",
+    ink: "#fff7dd",
+    texture: "radial-gradient(circle at 72% 30%, rgba(255,183,3,0.42), transparent 20%), repeating-linear-gradient(0deg, rgba(255,255,255,0.08) 0 1px, transparent 1px 22px)"
+  },
+  "Quiet Room": {
+    code: "QR",
+    kicker: "Drama series",
+    accent: "#8aa9b8",
+    ink: "#f4f7fb",
+    texture: "linear-gradient(90deg, rgba(255,255,255,0.08), transparent 42%), radial-gradient(circle at 76% 18%, rgba(96,125,139,0.4), transparent 22%)"
+  },
+  "Weekend Mode": {
+    code: "WM",
+    kicker: "Comedy",
+    accent: "#37d6b5",
+    ink: "#f5fffb",
+    texture: "radial-gradient(circle at 20% 22%, rgba(55,214,181,0.4), transparent 22%), linear-gradient(135deg, rgba(255,255,255,0.16), transparent 34%)"
+  }
+};
+
+const fallbackState = {
+  recommendations: [
+    {
+      from: "Elisa",
+      title: "Glass House",
+      mood: "deep",
+      kind: "recommend",
+      note: "Te lo mando per quando vuoi qualcosa di teso ma elegante."
+    },
+    {
+      from: "Serena",
+      title: "Weekend Mode",
+      mood: "chill",
+      kind: "watch",
+      note: "Lo guardiamo insieme dopo cena?"
+    },
+    {
+      from: "Dario",
+      title: "Street Finals",
+      mood: "adrenaline",
+      moods: ["adrenaline"],
+      kind: "recommend",
+      note: "Per il mood competitivo. Secondo me ti prende subito."
+    }
+  ],
+  activities: [
+    { actor: "Elisa", text: "ha consigliato Glass House a Filippo", mood: "deep" },
+    { actor: "Serena", text: "ha proposto una visione condivisa di Weekend Mode", mood: "chill" },
+    { actor: "Dario", text: "ha creato una catena di consigli adrenalina", mood: "adrenaline", moods: ["adrenaline"] }
+  ],
+  ratings: []
+};
+
+let communityState = loadState();
+
+function loadViberProfile() {
+  try {
+    const saved = JSON.parse(localStorage.getItem(profileStorageKey));
+    return saved || defaultViberProfile();
+  } catch {
+    return defaultViberProfile();
+  }
+}
+
+function defaultViberProfile() {
+  return {
+    name: "Filippo",
+    moods: ["deep", "chill"],
+    genres: ["Thriller", "Drama"],
+    mode: "Dopo ogni visione",
+    trust: vibers.reduce((acc, viber) => {
+      acc[viber.name] = viber.trust;
+      return acc;
+    }, {})
+  };
+}
+
+function saveViberProfile() {
+  localStorage.setItem(profileStorageKey, JSON.stringify(viberProfile));
+}
+
+function applyViberProfile(profile) {
+  currentProfile = profile.name || currentProfile;
+  vibers.forEach((viber) => {
+    if (profile.trust && profile.trust[viber.name]) {
+      viber.trust = Number(profile.trust[viber.name]);
+    }
+  });
+}
+
+function loadState() {
+  try {
+    const saved = JSON.parse(localStorage.getItem(storageKey));
+    return saved || cloneFallbackState();
+  } catch {
+    return cloneFallbackState();
+  }
+}
+
+function cloneFallbackState() {
+  return JSON.parse(JSON.stringify(fallbackState));
+}
+
+function saveState() {
+  localStorage.setItem(storageKey, JSON.stringify(communityState));
+}
+
+function getItem(title) {
+  return items.find((item) => item.title === title) || items[0];
+}
+
+function normaliseMoodId(mood) {
+  if (mood === "energy") return "adrenaline";
+  return moodIds.includes(mood) ? mood : "chill";
+}
+
+function normaliseMoodList(value) {
+  const list = Array.isArray(value) ? value : [value].filter(Boolean);
+  const unique = [];
+  list.forEach((mood) => {
+    const id = normaliseMoodId(mood);
+    if (!unique.includes(id)) unique.push(id);
+  });
+  return unique.slice(0, maxMoodSelection);
+}
+
+function getMoodOption(id) {
+  return moodOptions.find((mood) => mood.id === normaliseMoodId(id)) || moodOptions[0];
+}
+
+function moodLabel(id) {
+  return getMoodOption(id).label;
+}
+
+function moodLabelList(value) {
+  return normaliseMoodList(value).map(moodLabel).join(", ");
+}
+
+function getMoodIds(source) {
+  return normaliseMoodList(source.moods || source.mood || "chill");
+}
+
+function getItemMoods(item) {
+  return getMoodIds(item);
+}
+
+function moodTagsTemplate(value) {
+  return normaliseMoodList(value).map((mood) => `<span class="tag">${moodLabel(mood)}</span>`).join("");
+}
+
+function coverSlug(title) {
+  return title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
+}
+
+function getCoverDetails(item) {
+  return coverDetails[item.title] || {
+    code: item.title.slice(0, 2).toUpperCase(),
+    kicker: item.label,
+    accent: "#37d6b5",
+    ink: "#f5f7fb",
+    texture: "linear-gradient(135deg, rgba(255,255,255,0.14), transparent 36%)"
+  };
+}
+
+function posterPath(item) {
+  return `./assets/posters/${coverSlug(item.title)}.jpg`;
+}
+
+function coverStyle(item) {
+  const cover = getCoverDetails(item);
+  return `--poster-bg: ${item.gradient}; --cover-accent: ${cover.accent}; --cover-ink: ${cover.ink};`;
+}
+
+function coverArtTemplate(item, variant = "") {
+  const variantClass = variant ? ` ${variant}` : "";
+  return `
+    <span class="cover-art cover-${coverSlug(item.title)}${variantClass}" style="${coverStyle(item)}">
+      <img class="cover-image" src="${posterPath(item)}" alt="Locandina fittizia di ${item.title}" loading="lazy" />
+    </span>
+  `;
+}
+
+function renderCover(container, item, variant = "") {
+  container.innerHTML = coverArtTemplate(item, variant);
+}
+
+function getViber(name) {
+  return vibers.find((viber) => viber.name === name) || vibers[0];
+}
+
+function getTrustedRecommendations() {
+  return [...communityState.recommendations].sort((a, b) => recommendationStrength(b) - recommendationStrength(a));
+}
+
+function getActivityApprovalNames(activity) {
+  return Array.isArray(activity.approvedBy) ? activity.approvedBy : [];
+}
+
+function getActivityApprovalCount(activity) {
+  return Math.max(Number(activity.boosts || 0), getActivityApprovalNames(activity).length);
+}
+
+function recommendationStrength(recommendation) {
+  const relatedApprovals = communityState.activities
+    .filter((activity) => activity.actor === recommendation.from && activity.text.includes(recommendation.title))
+    .reduce((sum, activity) => sum + getActivityApprovalCount(activity), 0);
+  return getViber(recommendation.from).trust + relatedApprovals * 4;
+}
+
+function trustCopy(trust) {
+  if (trust >= 90) return "Fiducia altissima";
+  if (trust >= 82) return "Fiducia alta";
+  return "Fiducia buona";
+}
+
+function initials(name) {
+  return name
+    .trim()
+    .split(/\s+/)
+    .slice(0, 2)
+    .map((part) => part[0])
+    .join("")
+    .toUpperCase() || "VI";
+}
+
+function showToast(message) {
+  window.clearTimeout(toastTimer);
+  appToast.textContent = message;
+  appToast.classList.add("is-visible");
+  toastTimer = window.setTimeout(() => {
+    appToast.classList.remove("is-visible");
+  }, 2400);
+}
+
+function setBottomNavActive(target) {
+  document.querySelectorAll("[data-bottom-nav]").forEach((button) => {
+    button.classList.toggle("is-active", button.dataset.bottomNav === target);
+  });
+}
+
+function scrollHomeToTop() {
+  setBottomNavActive("home");
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+function scrollToCommunity() {
+  setBottomNavActive("community");
+  communitySection.scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+function openMoodEntry(profile) {
+  pendingProfile = profile;
+  selectedMoods = normaliseMoodList(viberProfile.moods).slice(0, maxMoodSelection);
+  profileView.classList.add("hidden");
+  moodEntryView.classList.remove("hidden");
+  builderView.classList.add("hidden");
+  homeView.classList.add("hidden");
+  renderEntryMoodPicker();
+}
+
+function enterHome(profile, moods = []) {
+  sessionMoods = normaliseMoodList(moods);
+  openHome(profile);
+}
+
+function openHome(profile) {
+  currentProfile = profile;
+  profileGreeting.textContent = profile;
+  profileView.classList.add("hidden");
+  moodEntryView.classList.add("hidden");
+  builderView.classList.add("hidden");
+  homeView.classList.remove("hidden");
+  setBottomNavActive("home");
+  render();
+}
+
+function backToProfiles() {
+  homeView.classList.add("hidden");
+  builderView.classList.add("hidden");
+  moodEntryView.classList.add("hidden");
+  profileView.classList.remove("hidden");
+  drawer.classList.remove("is-open");
+  closePlayer();
+  closeRating();
+  closeTvRating();
+}
+
+function openBuilder(returnView) {
+  builderReturnView = returnView;
+  profileView.classList.add("hidden");
+  moodEntryView.classList.add("hidden");
+  homeView.classList.add("hidden");
+  builderView.classList.remove("hidden");
+  renderBuilder();
+}
+
+function closeBuilderView() {
+  builderView.classList.add("hidden");
+  if (builderReturnView === "home") {
+    homeView.classList.remove("hidden");
+    setBottomNavActive("home");
+    render();
+  } else {
+    profileView.classList.remove("hidden");
+  }
+}
+
+function render() {
+  renderCatalog();
+  renderCommunity();
+}
+
+function renderEntryMoodPicker() {
+  entryMoodPicker.innerHTML = moodOptions.map((mood) => {
+    const selected = selectedMoods.includes(mood.id) ? " is-selected" : "";
+    return `
+      <button class="mood-card${selected}" data-entry-mood="${mood.id}" type="button" style="--mood-bg: ${mood.color}">
+        <strong>${mood.label}</strong>
+        <span>${mood.example}</span>
+      </button>
+    `;
+  }).join("");
+
+  document.querySelectorAll("[data-entry-mood]").forEach((button) => {
+    button.addEventListener("click", () => {
+      toggleMoodSelection(button.dataset.entryMood, () => renderEntryMoodPicker());
+    });
+  });
+}
+
+function renderBuilder() {
+  builderName.value = viberProfile.name || currentProfile;
+  recommendationMode.value = viberProfile.mode || "Dopo ogni visione";
+  document.querySelectorAll("[data-builder-mood]").forEach((button) => {
+    button.classList.toggle("is-selected", normaliseMoodList(viberProfile.moods).includes(button.dataset.builderMood));
+  });
+  document.querySelectorAll("[data-builder-genre]").forEach((button) => {
+    button.classList.toggle("is-selected", viberProfile.genres.includes(button.dataset.builderGenre));
+  });
+
+  trustBuilderList.innerHTML = [...vibers]
+    .sort((a, b) => b.trust - a.trust)
+    .map((viber) => `
+      <label class="trust-row">
+        <span class="viber-avatar" style="--viber-bg: ${viber.color}">${viber.initials}</span>
+        <span>
+          <strong>${viber.name}</strong>
+          <p>${viber.relation}</p>
+        </span>
+        <input data-trust-viber="${viber.name}" type="range" min="0" max="100" value="${viber.trust}" />
+        <span class="trust-value">${viber.trust}%</span>
+      </label>
+    `).join("");
+
+  document.querySelectorAll("[data-trust-viber]").forEach((input) => {
+    input.addEventListener("input", () => {
+      const name = input.dataset.trustViber;
+      const value = Number(input.value);
+      const viber = getViber(name);
+      viber.trust = value;
+      viberProfile.trust[name] = value;
+      input.closest(".trust-row").querySelector(".trust-value").textContent = `${value}%`;
+      updateBuilderPreview();
+    });
+  });
+
+  updateBuilderPreview();
+}
+
+function updateBuilderPreview() {
+  const name = builderName.value.trim() || "Nuovo Viber";
+  const topMood = moodLabel(normaliseMoodList(viberProfile.moods)[0] || "chill");
+  const topGenre = viberProfile.genres[0] || "generi";
+  const averageTrust = Math.round(vibers.reduce((sum, viber) => sum + viber.trust, 0) / vibers.length);
+  previewAvatar.textContent = initials(name);
+  previewName.textContent = name;
+  previewSummary.textContent = `${topMood} · ${topGenre} · fiducia media ${averageTrust}%`;
+}
+
+function toggleMoodSelection(mood, renderAgain) {
+  const id = normaliseMoodId(mood);
+  if (selectedMoods.includes(id)) {
+    selectedMoods = selectedMoods.filter((item) => item !== id);
+  } else if (selectedMoods.length >= maxMoodSelection) {
+    showToast("Puoi scegliere massimo 3 mood.");
+    return;
+  } else {
+    selectedMoods = [...selectedMoods, id];
+  }
+  renderAgain();
+}
+
+function renderCatalog() {
+  const visible = items.filter((item) => {
+    const matchesFilter = activeFilter === "all" || item.type === activeFilter;
+    const matchesMood = activeMood === "all" || getItemMoods(item).includes(activeMood);
+    const matchesQuery = item.title.toLowerCase().includes(query) || item.label.toLowerCase().includes(query);
+    return matchesFilter && matchesMood && matchesQuery;
+  });
+
+  rankingRow.innerHTML = items.slice(0, 10).map((item, index) => rankTemplate(item, index + 1)).join("");
+  posterGrid.innerHTML = visible.map(posterTemplate).join("");
+
+  document.querySelectorAll("[data-title]").forEach((button) => {
+    button.addEventListener("click", () => openDrawer(button.dataset.title));
+  });
+}
+
+function renderCommunity() {
+  const trustedVibers = [...vibers].sort((a, b) => b.trust - a.trust);
+  const trustedRecommendations = getTrustedRecommendations();
+
+  viberCount.textContent = `${vibers.length} fidati`;
+  viberList.innerHTML = trustedVibers.map(viberTemplate).join("");
+  recommendationFeed.innerHTML = trustedRecommendations.slice(0, 5).map(recommendationTemplate).join("");
+  activityFeed.innerHTML = communityState.activities.slice(0, 6).map(activityTemplate).join("");
+
+  document.querySelectorAll("[data-watch-title]").forEach((button) => {
+    button.addEventListener("click", () => openPlayer(button.dataset.watchTitle));
+  });
+
+  document.querySelectorAll("[data-share-title]").forEach((button) => {
+    button.addEventListener("click", () => openRating(button.dataset.shareTitle));
+  });
+
+  document.querySelectorAll("[data-approve-activity]").forEach((button) => {
+    button.addEventListener("click", () => approveActivity(Number(button.dataset.approveActivity)));
+  });
+}
+
+function rankTemplate(item, rank) {
+  return `
+    <button class="rank-card" data-title="${item.title}" type="button">
+      ${coverArtTemplate(item, "rank-cover")}
+      <span class="rank-number">${rank}</span>
+      <span class="rank-body">
+        <strong>${item.title}</strong>
+        <span>${item.label}</span>
+      </span>
+    </button>
+  `;
+}
+
+function posterTemplate(item) {
+  return `
+    <button class="poster-card" data-title="${item.title}" type="button">
+      ${coverArtTemplate(item, "poster-cover")}
+      <span class="poster-body">
+        <strong>${item.title}</strong>
+        <span>${item.label}</span>
+        <span class="tag-row">
+          ${moodTagsTemplate(getItemMoods(item))}
+          <span class="tag">${item.type}</span>
+        </span>
+      </span>
+    </button>
+  `;
+}
+
+function recommendationTemplate(recommendation) {
+  const item = getItem(recommendation.title);
+  const viber = getViber(recommendation.from);
+  const actionCopy = recommendation.kind === "watch" ? "Vuole guardarlo con te" : "Consiglio per te";
+  const noteCopy = compactRecommendationNote(recommendation.note, item, viber);
+  return `
+    <article class="recommendation-card">
+      <div class="recommendation-art">${coverArtTemplate(item, "recommendation-cover")}</div>
+      <div class="recommendation-body">
+        <div class="trust-line">
+          <span class="trust-person">
+            <span class="viber-avatar tiny-avatar" style="--viber-bg: ${viber.color}">${viber.initials}</span>
+            <p class="eyebrow">${recommendation.from}</p>
+          </span>
+          <span>${viber.trust}% fiducia</span>
+        </div>
+        <h3>${item.title}</h3>
+        <p>${actionCopy}: ${noteCopy}</p>
+        <div class="recommendation-meta">
+          ${moodTagsTemplate(getMoodIds(recommendation))}
+          <span class="tag">${item.label}</span>
+          <span class="tag">${viber.relation}</span>
+        </div>
+      </div>
+      <div class="recommendation-actions">
+        <button class="small-action is-primary" data-watch-title="${item.title}" type="button">Guarda</button>
+        <button class="small-action" data-share-title="${item.title}" type="button">Ricambia</button>
+      </div>
+    </article>
+  `;
+}
+
+function activityTemplate(activity, index) {
+  const viber = getViber(activity.actor);
+  const isViberActivity = vibers.some((entry) => entry.name === activity.actor);
+  const approvalNames = getActivityApprovalNames(activity);
+  const approvalCount = getActivityApprovalCount(activity);
+  const isApproved = approvalNames.includes(currentProfile);
+  const trustTag = isViberActivity ? `<span class="tag">fiducia ${viber.trust}%</span>` : "";
+  const approvalTag = approvalCount > 0 ? `<span class="tag is-strong">rafforzato ${approvalCount}</span>` : "";
+  const approveButton = isViberActivity
+    ? `<button class="small-action activity-approve${isApproved ? " is-approved" : ""}" data-approve-activity="${index}" type="button">${isApproved ? "Approvato" : "Approva"}</button>`
+    : "";
+  return `
+    <article class="activity-card${isApproved ? " is-approved" : ""}">
+      <strong>${activity.actor}</strong>
+      <p>${activity.text}</p>
+      <div class="activity-meta">
+        ${moodTagsTemplate(getMoodIds(activity))}
+        ${trustTag}
+        ${approvalTag}
+      </div>
+      ${approveButton ? `<div class="activity-actions">${approveButton}</div>` : ""}
+    </article>
+  `;
+}
+
+function viberTemplate(viber) {
+  const statusClass = viber.status === "away" ? "status-dot is-away" : "status-dot";
+  return `
+    <article class="viber-card">
+      <span class="viber-avatar" style="--viber-bg: ${viber.color}">${viber.initials}</span>
+      <span>
+        <strong>${viber.name}</strong>
+        <p>${viber.relation} · mood ${moodLabel(viber.mood)}</p>
+        <span class="trust-meter"><span style="width: ${viber.trust}%"></span></span>
+      </span>
+      <span class="${statusClass}" title="${viber.status}"></span>
+    </article>
+  `;
+}
+
+function compactRecommendationNote(note, item, viber) {
+  if (!note) return `${viber.name} conosce il tuo gusto.`;
+  if (note.includes("Hai dato") || note.includes("ti manda questo")) {
+    return `${viber.name} conosce il tuo gusto.`;
+  }
+  if (note.length > 82) {
+    return note.slice(0, 79).trim() + "...";
+  }
+  return note;
+}
+
+function openDrawer(title) {
+  const item = getItem(title);
+  activeTitle = item.title;
+  renderCover(drawerPoster, item, "drawer-cover");
+  drawerType.textContent = item.label;
+  drawerTitle.textContent = item.title;
+  drawerDescription.textContent = item.description;
+  drawer.classList.add("is-open");
+}
+
+function closeDrawerView() {
+  drawer.classList.remove("is-open");
+}
+
+function openPlayer(title) {
+  const item = getItem(title);
+  pendingTitle = item.title;
+  activeTitle = item.title;
+  playerTitle.textContent = item.title;
+  renderCover(playerArt, item, "player-cover");
+  playerProgress.style.width = "0";
+  playerOverlay.classList.add("is-open");
+  window.setTimeout(() => {
+    playerProgress.style.width = "94%";
+  }, 50);
+}
+
+function closePlayer() {
+  playerOverlay.classList.remove("is-open");
+}
+
+function finishWatching() {
+  closePlayer();
+  window.setTimeout(() => openTvRating(pendingTitle), 180);
+}
+
+function openRating(title) {
+  openPhoneRating(title);
+}
+
+function setupRating(title, surface) {
+  const item = getItem(title);
+  pendingTitle = item.title;
+  selectedRating = 4;
+  selectedMoods = normaliseMoodList([...getItemMoods(item), ...sessionMoods]).slice(0, maxMoodSelection);
+  selectedViberName = [...vibers].sort((a, b) => b.trust - a.trust)[0].name;
+  activeRatingSurface = surface;
+}
+
+function openPhoneRating(title) {
+  const item = getItem(title);
+  setupRating(title, "phone");
+  ratingTitle.textContent = `Com'e andata ${item.title}?`;
+  recommendationNote.value = `Mi fido del tuo gusto per: ${moodLabelList(selectedMoods)}.`;
+  renderStars();
+  renderMoodPicker(phoneMoodPicker, "phone");
+  renderViberPicker(phoneViberPicker, "phone");
+  ratingNotification.classList.add("is-open");
+}
+
+function openTvRating(title) {
+  const item = getItem(title);
+  setupRating(title, "tv");
+  tvRatingTitle.textContent = `Com'e andata ${item.title}?`;
+  renderTvStars();
+  renderMoodPicker(tvMoodPicker, "tv");
+  renderViberPicker(tvViberPicker, "tv");
+  tvRatingOverlay.classList.add("is-open");
+}
+
+function renderStars() {
+  starPicker.innerHTML = [1, 2, 3, 4, 5].map((value) => {
+    const selected = value <= selectedRating ? " is-selected" : "";
+    return `<button class="star-button${selected}" data-rating="${value}" type="button" aria-label="${value} stelle">★</button>`;
+  }).join("");
+
+  document.querySelectorAll(".star-button").forEach((button) => {
+    button.addEventListener("click", () => {
+      selectedRating = Number(button.dataset.rating);
+      renderStars();
+    });
+  });
+}
+
+function renderTvStars() {
+  tvStarPicker.innerHTML = [1, 2, 3, 4, 5].map((value) => {
+    const selected = value <= selectedRating ? " is-selected" : "";
+    return `<button class="tv-star-button${selected}" data-tv-rating="${value}" type="button" aria-label="${value} stelle">★</button>`;
+  }).join("");
+
+  document.querySelectorAll("[data-tv-rating]").forEach((button) => {
+    button.addEventListener("click", () => {
+      selectedRating = Number(button.dataset.tvRating);
+      renderTvStars();
+    });
+  });
+}
+
+function renderMoodPicker(container, surface) {
+  container.innerHTML = moodIds.map((mood) => {
+    const selected = selectedMoods.includes(mood) ? " is-selected" : "";
+    const disabled = !selected && selectedMoods.length >= maxMoodSelection ? " is-disabled" : "";
+    return `<button class="choice-chip${selected}${disabled}" data-mood-choice="${mood}" data-surface="${surface}" type="button">${moodLabel(mood)}</button>`;
+  }).join("");
+
+  container.querySelectorAll("[data-mood-choice]").forEach((button) => {
+    button.addEventListener("click", () => {
+      toggleMoodSelection(button.dataset.moodChoice, () => renderMoodPicker(container, surface));
+    });
+  });
+}
+
+function renderViberPicker(container, surface) {
+  const trustedVibers = [...vibers].sort((a, b) => b.trust - a.trust);
+  container.innerHTML = trustedVibers.map((viber) => {
+    const selected = viber.name === selectedViberName ? " is-selected" : "";
+    return `
+      <button class="viber-pick${selected}" data-viber-choice="${viber.name}" data-surface="${surface}" type="button">
+        <span class="viber-avatar" style="--viber-bg: ${viber.color}">${viber.initials}</span>
+        <span>
+          <strong>${viber.name}</strong>
+          <span>fiducia ${viber.trust}%</span>
+        </span>
+      </button>
+    `;
+  }).join("");
+
+  container.querySelectorAll("[data-viber-choice]").forEach((button) => {
+    button.addEventListener("click", () => {
+      selectedViberName = button.dataset.viberChoice;
+      renderViberPicker(container, surface);
+    });
+  });
+}
+
+function closeRating() {
+  ratingNotification.classList.remove("is-open");
+}
+
+function closeTvRating() {
+  tvRatingOverlay.classList.remove("is-open");
+}
+
+function approveActivity(index) {
+  const activity = communityState.activities[index];
+  if (!activity) return;
+
+  const approvedBy = getActivityApprovalNames(activity);
+  if (approvedBy.includes(currentProfile)) {
+    showToast("Hai gia approvato questo consiglio.");
+    return;
+  }
+
+  const currentBoosts = getActivityApprovalCount(activity);
+  activity.approvedBy = [...approvedBy, currentProfile];
+  activity.boosts = Math.max(currentBoosts + 1, activity.approvedBy.length);
+
+  const viber = vibers.find((entry) => entry.name === activity.actor);
+  if (viber) {
+    viber.trust = Math.min(100, viber.trust + 1);
+    if (!viberProfile.trust) viberProfile.trust = {};
+    viberProfile.trust[viber.name] = viber.trust;
+    saveViberProfile();
+  }
+
+  saveState();
+  renderCommunity();
+  showToast(viber ? `Consiglio rafforzato: ${viber.name} sale a ${viber.trust}% di fiducia.` : "Consiglio rafforzato.");
+}
+
+function commitInteraction(kind) {
+  const item = getItem(pendingTitle);
+  const viber = vibers.find((entry) => entry.name === selectedViberName) || vibers[0];
+  const moods = selectedMoods.length ? selectedMoods : getItemMoods(item).slice(0, 1);
+  const mood = moodLabelList(moods);
+  const note = activeRatingSurface === "phone"
+    ? recommendationNote.value.trim() || `Perfetto per un mood ${mood}.`
+    : `Scelto da TV per un mood ${mood}.`;
+  const activityText = kind === "watch"
+    ? `ha chiesto a ${viber.name} di guardare insieme ${item.title}`
+    : `ha consigliato ${item.title} a ${viber.name}`;
+  const viberReply = kind === "watch"
+    ? `ha rilanciato una visione condivisa dopo il tuo invito su ${item.title}`
+    : `ha consigliato un nuovo titolo dopo il tuo rating su ${item.title}`;
+
+  communityState.ratings.unshift({
+    profile: currentProfile,
+    title: item.title,
+    rating: selectedRating,
+    mood,
+    moods,
+    surface: activeRatingSurface
+  });
+
+  communityState.activities.unshift({
+    actor: currentProfile,
+    text: activityText,
+    mood,
+    moods
+  });
+
+  communityState.recommendations.unshift({
+    from: viber.name,
+    title: getNextRecommendation(item.title, moods).title,
+    mood,
+    moods,
+    kind,
+    note: kind === "watch"
+      ? `Fiducia ${viber.trust}% su questo mood.`
+      : `${viber.name} conosce il tuo gusto.`
+  });
+
+  communityState.activities.unshift({
+    actor: viber.name,
+    text: viberReply,
+    mood,
+    moods
+  });
+
+  saveState();
+  closeRating();
+  closeTvRating();
+  renderCommunity();
+  showToast(kind === "watch" ? `Invito inviato a ${viber.name}.` : `Consiglio inviato a ${viber.name}.`);
+}
+
+function schedulePhoneReminder() {
+  closeTvRating();
+  communityState.activities.unshift({
+    actor: "Vibely",
+    text: `ti mandera un reminder telefono tra qualche ora per ${pendingTitle}`,
+    mood: moodLabelList(selectedMoods),
+    moods: selectedMoods
+  });
+  saveState();
+  renderCommunity();
+  showToast("Reminder telefono programmato.");
+  window.setTimeout(() => openPhoneRating(pendingTitle), 500);
+}
+
+function getNextRecommendation(currentTitle, moods) {
+  const ids = normaliseMoodList(moods);
+  return items.find((item) => item.title !== currentTitle && getItemMoods(item).some((mood) => ids.includes(mood)))
+    || items.find((item) => item.title !== currentTitle)
+    || items[0];
+}
+
+document.querySelectorAll(".profile-card[data-profile]").forEach((button) => {
+  button.addEventListener("click", () => openMoodEntry(button.dataset.profile));
+});
+
+document.querySelector(".add-profile").addEventListener("click", () => openBuilder("profiles"));
+document.querySelector("#openBuilderFromProfiles").addEventListener("click", () => openBuilder("profiles"));
+document.querySelector("#closeBuilder").addEventListener("click", closeBuilderView);
+document.querySelector("#cancelBuilder").addEventListener("click", closeBuilderView);
+document.querySelector("#backToProfilesFromMood").addEventListener("click", backToProfiles);
+document.querySelector("#continueWithMood").addEventListener("click", () => enterHome(pendingProfile, selectedMoods));
+document.querySelector("#skipMoodEntry").addEventListener("click", () => enterHome(pendingProfile, []));
+
+document.querySelector("#backProfiles").addEventListener("click", backToProfiles);
+
+document.querySelector("#closeDrawer").addEventListener("click", closeDrawerView);
+
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape") closeDrawerView();
+});
+
+document.addEventListener("click", (event) => {
+  if (!drawer.classList.contains("is-open")) return;
+  if (drawer.contains(event.target)) return;
+  if (event.target.closest("[data-title]")) return;
+  closeDrawerView();
+});
+
+document.querySelector("#heroPlayButton").addEventListener("click", () => openPlayer("After Midnight"));
+document.querySelector("#simulateFinish")?.addEventListener("click", () => openTvRating(activeTitle));
+document.querySelector("#simulatePhoneReminder")?.addEventListener("click", () => openPhoneRating(activeTitle));
+document.querySelector("#closePlayer").addEventListener("click", closePlayer);
+document.querySelector("#finishWatchButton").addEventListener("click", finishWatching);
+document.querySelector("#dismissRating").addEventListener("click", closeRating);
+document.querySelector("#sendRecommendation").addEventListener("click", () => commitInteraction("recommend"));
+document.querySelector("#watchTogether").addEventListener("click", () => commitInteraction("watch"));
+document.querySelector("#tvSendRecommendation").addEventListener("click", () => commitInteraction("recommend"));
+document.querySelector("#tvWatchTogether").addEventListener("click", () => commitInteraction("watch"));
+document.querySelector("#tvPhoneLater").addEventListener("click", schedulePhoneReminder);
+
+drawerPlayButton.addEventListener("click", () => openPlayer(activeTitle));
+drawerRecommendButton.addEventListener("click", () => openRating(activeTitle));
+
+document.querySelectorAll("[data-bottom-nav]").forEach((button) => {
+  button.addEventListener("click", () => {
+    const target = button.dataset.bottomNav;
+    if (target === "home") scrollHomeToTop();
+    if (target === "community") scrollToCommunity();
+    if (target === "profile") {
+      setBottomNavActive("profile");
+      openBuilder("home");
+    }
+  });
+});
+
+document.querySelectorAll(".nav-tab[data-filter]").forEach((button) => {
+  button.addEventListener("click", () => {
+    document.querySelectorAll(".nav-tab[data-filter]").forEach((tab) => tab.classList.remove("is-active"));
+    button.classList.add("is-active");
+    activeFilter = button.dataset.filter;
+    renderCatalog();
+  });
+});
+
+document.querySelectorAll(".mood-chip").forEach((button) => {
+  button.addEventListener("click", () => {
+    document.querySelectorAll(".mood-chip").forEach((chip) => chip.classList.remove("is-active"));
+    button.classList.add("is-active");
+    activeMood = button.dataset.mood;
+    renderCatalog();
+  });
+});
+
+searchInput.addEventListener("input", (event) => {
+  query = event.target.value.trim().toLowerCase();
+  renderCatalog();
+});
+
+builderName.addEventListener("input", updateBuilderPreview);
+
+document.querySelectorAll("[data-builder-mood]").forEach((button) => {
+  button.addEventListener("click", () => {
+    const mood = button.dataset.builderMood;
+    const moods = normaliseMoodList(viberProfile.moods);
+    if (moods.includes(mood)) {
+      viberProfile.moods = moods.filter((item) => item !== mood);
+    } else if (moods.length >= maxMoodSelection) {
+      showToast("Puoi scegliere massimo 3 mood nel profilo.");
+      return;
+    } else {
+      viberProfile.moods = [...moods, mood];
+    }
+    button.classList.toggle("is-selected");
+    updateBuilderPreview();
+  });
+});
+
+document.querySelectorAll("[data-builder-genre]").forEach((button) => {
+  button.addEventListener("click", () => {
+    const genre = button.dataset.builderGenre;
+    if (viberProfile.genres.includes(genre)) {
+      viberProfile.genres = viberProfile.genres.filter((item) => item !== genre);
+    } else {
+      viberProfile.genres.push(genre);
+    }
+    button.classList.toggle("is-selected");
+    updateBuilderPreview();
+  });
+});
+
+builderForm.addEventListener("submit", (event) => {
+  event.preventDefault();
+  viberProfile.name = builderName.value.trim() || "Nuovo Viber";
+  viberProfile.moods = normaliseMoodList(viberProfile.moods);
+  viberProfile.mode = recommendationMode.value;
+  applyViberProfile(viberProfile);
+  saveViberProfile();
+  profileGreeting.textContent = viberProfile.name;
+  openHome(viberProfile.name);
+});
+
+renderStars();

@@ -1,0 +1,321 @@
+<!doctype html>
+<html lang="it">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Vibely MVP</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main id="app" class="app">
+      <section id="profileView" class="profile-view" aria-labelledby="profile-title">
+        <div class="brand-mark">Vibely</div>
+        <div class="profile-panel">
+          <h1 id="profile-title">Chi guarda stasera?</h1>
+          <div class="profiles" aria-label="Scegli profilo">
+            <button class="profile-card" data-profile="Filippo" type="button">
+              <span class="avatar avatar-one"></span>
+              <span>Filippo</span>
+            </button>
+            <button class="profile-card" data-profile="Carol" type="button">
+              <span class="avatar avatar-two"></span>
+              <span>Carol</span>
+            </button>
+            <button class="profile-card" data-profile="Domenico" type="button">
+              <span class="avatar avatar-three"></span>
+              <span>Domenico</span>
+            </button>
+            <button class="profile-card add-profile" type="button">
+              <span class="add-icon">+</span>
+              <span>Aggiungi</span>
+            </button>
+          </div>
+          <button id="openBuilderFromProfiles" class="builder-entry" type="button">Costruisci profilo Viber</button>
+          <a class="case-study-link" href="./ux.html">Leggi UX case study</a>
+        </div>
+      </section>
+
+      <section id="moodEntryView" class="mood-entry-view hidden" aria-labelledby="mood-entry-title">
+        <header class="builder-topbar">
+          <button id="backToProfilesFromMood" class="icon-button" type="button" aria-label="Torna ai profili" title="Torna ai profili">
+            <span aria-hidden="true">‹</span>
+          </button>
+          <div class="wordmark">Vibely</div>
+        </header>
+        <div class="mood-entry-shell">
+          <p class="eyebrow">Prima di iniziare</p>
+          <h1 id="mood-entry-title">Che vibe hai adesso?</h1>
+          <p>Scegli fino a 3 mood per dare contesto ai consigli dei tuoi Vibers. Puoi anche saltare.</p>
+          <div id="entryMoodPicker" class="mood-entry-grid" aria-label="Mood iniziale"></div>
+          <div class="mood-entry-actions">
+            <button id="continueWithMood" class="primary-action" type="button">Entra in Vibely</button>
+            <button id="skipMoodEntry" class="secondary-action" type="button">Salta</button>
+          </div>
+        </div>
+      </section>
+
+      <section id="builderView" class="builder-view hidden" aria-labelledby="builder-title">
+        <header class="builder-topbar">
+          <button id="closeBuilder" class="icon-button" type="button" aria-label="Torna indietro" title="Torna indietro">
+            <span aria-hidden="true">‹</span>
+          </button>
+          <div class="wordmark">Vibely</div>
+        </header>
+        <div class="builder-shell">
+          <section class="builder-intro">
+            <p class="eyebrow">Profilo Viber</p>
+            <h1 id="builder-title">Costruisci il tuo gusto fidato.</h1>
+            <p>
+              Vibely impara da chi ascolti davvero: persone, mood e contesti. Il profilo Viber serve a pesare i consigli umani prima dell'algoritmo.
+            </p>
+            <div class="viber-preview" aria-label="Anteprima profilo Viber">
+              <span id="previewAvatar" class="viber-avatar preview-avatar">FI</span>
+              <div>
+                <strong id="previewName">Filippo</strong>
+                <p id="previewSummary">Deep · Thriller · fiducia alta</p>
+              </div>
+            </div>
+          </section>
+
+          <form id="builderForm" class="builder-form">
+            <label class="field-label" for="builderName">Nome profilo</label>
+            <input id="builderName" class="text-field" type="text" value="Filippo" autocomplete="off" />
+
+            <div class="builder-group">
+              <p class="field-label">Mood che ti rappresentano, massimo 3</p>
+              <div class="builder-chips" aria-label="Mood preferiti">
+                <button class="builder-chip is-selected" data-builder-mood="deep" type="button">Deep</button>
+                <button class="builder-chip is-selected" data-builder-mood="chill" type="button">Chill</button>
+                <button class="builder-chip" data-builder-mood="adrenaline" type="button">Adrenalina</button>
+                <button class="builder-chip" data-builder-mood="comfort" type="button">Comfort</button>
+                <button class="builder-chip" data-builder-mood="romantic" type="button">Romantico</button>
+                <button class="builder-chip" data-builder-mood="dark" type="button">Dark</button>
+                <button class="builder-chip" data-builder-mood="mindblown" type="button">Mind-blown</button>
+                <button class="builder-chip" data-builder-mood="nostalgic" type="button">Nostalgico</button>
+              </div>
+            </div>
+
+            <div class="builder-group">
+              <p class="field-label">Generi su cui vuoi consigli umani</p>
+              <div class="builder-chips" aria-label="Generi preferiti">
+                <button class="builder-chip is-selected" data-builder-genre="Thriller" type="button">Thriller</button>
+                <button class="builder-chip" data-builder-genre="Comedy" type="button">Comedy</button>
+                <button class="builder-chip is-selected" data-builder-genre="Drama" type="button">Drama</button>
+                <button class="builder-chip" data-builder-genre="Sport" type="button">Sport</button>
+                <button class="builder-chip" data-builder-genre="Sci-fi" type="button">Sci-fi</button>
+              </div>
+            </div>
+
+            <div class="builder-group">
+              <div class="mini-head">
+                <p class="field-label">Quanto ti fidi dei tuoi Vibers?</p>
+                <span>influenza l'ordine dei consigli</span>
+              </div>
+              <div id="trustBuilderList" class="trust-builder-list"></div>
+            </div>
+
+            <label class="field-label" for="recommendationMode">Quando vuoi ricevere consigli?</label>
+            <select id="recommendationMode" class="select-field">
+              <option>Dopo ogni visione</option>
+              <option>Quando apro Vibely</option>
+              <option>Solo quando lo chiedo</option>
+            </select>
+
+            <div class="builder-actions">
+              <button class="primary-action" type="submit">Salva profilo</button>
+              <button id="cancelBuilder" class="secondary-action" type="button">Annulla</button>
+            </div>
+          </form>
+        </div>
+      </section>
+
+      <section id="homeView" class="home-view hidden" aria-label="Home Vibely">
+        <header class="topbar">
+          <button id="backProfiles" class="icon-button" type="button" aria-label="Cambia profilo" title="Cambia profilo">
+            <span aria-hidden="true">‹</span>
+          </button>
+          <div class="wordmark">Vibely</div>
+          <nav class="nav-tabs" aria-label="Categorie">
+            <button class="nav-tab is-active" data-filter="all" type="button">Home</button>
+            <button class="nav-tab" data-filter="series" type="button">Serie</button>
+            <button class="nav-tab" data-filter="film" type="button">Film</button>
+            <button class="nav-tab" data-filter="sport" type="button">Sport</button>
+            <a class="nav-tab nav-link nav-case-link" href="./ux.html">UX case</a>
+            <a class="nav-tab nav-link nav-reminder-link" href="./ux.html#reminder">Reminder</a>
+          </nav>
+          <label class="search">
+            <span aria-hidden="true">⌕</span>
+            <input id="searchInput" type="search" placeholder="Cerca" autocomplete="off" />
+          </label>
+        </header>
+
+        <section class="hero" aria-labelledby="hero-title">
+          <div class="hero-art poster-hero-art">
+            <div class="beam beam-one"></div>
+            <div class="beam beam-two"></div>
+            <div class="city-line"></div>
+          </div>
+          <div class="hero-copy">
+            <p class="eyebrow">Nuovo episodio</p>
+            <h1 id="hero-title">After Midnight</h1>
+            <p class="hero-meta">Serie · Thriller · 52 min · 4K</p>
+            <p class="hero-description">
+              Una notte, quattro sconosciuti e una citta che cambia volto quando le luci si spengono.
+            </p>
+            <div class="hero-actions">
+              <button id="heroPlayButton" class="primary-action" type="button"><span aria-hidden="true">▶</span> Riproduci</button>
+              <button class="secondary-action" type="button"><span aria-hidden="true">i</span> Dettagli</button>
+            </div>
+          </div>
+          <aside class="watch-card" aria-label="Continua a guardare">
+            <p>Continua</p>
+            <strong id="profileGreeting">Filippo</strong>
+            <div class="progress"><span></span></div>
+          </aside>
+        </section>
+
+        <section class="content-shell">
+          <div class="section-head">
+            <h2>Top 10 oggi</h2>
+            <button class="text-button" type="button">Vedi tutto</button>
+          </div>
+          <div id="rankingRow" class="ranking-row"></div>
+
+          <div class="section-head">
+            <h2>Per il tuo mood</h2>
+            <div class="mood-tabs" aria-label="Mood">
+              <button class="mood-chip is-active" data-mood="all" type="button">Tutto</button>
+              <button class="mood-chip" data-mood="chill" type="button">Chill</button>
+              <button class="mood-chip" data-mood="adrenaline" type="button">Adrenalina</button>
+              <button class="mood-chip" data-mood="deep" type="button">Deep</button>
+              <button class="mood-chip" data-mood="comfort" type="button">Comfort</button>
+              <button class="mood-chip" data-mood="dark" type="button">Dark</button>
+              <button class="mood-chip" data-mood="romantic" type="button">Romantico</button>
+              <button class="mood-chip" data-mood="mindblown" type="button">Mind-blown</button>
+            </div>
+          </div>
+          <div id="posterGrid" class="poster-grid"></div>
+
+          <div id="communitySection" class="section-head social-head">
+            <div>
+              <p class="eyebrow">Cerchia fidata</p>
+              <h2>Consigli dai tuoi Vibers</h2>
+            </div>
+          </div>
+          <div class="social-layout">
+            <section class="viber-panel" aria-label="Consigli dai Vibers">
+              <div id="recommendationFeed" class="recommendation-feed"></div>
+            </section>
+            <aside class="viber-panel" aria-label="Vibers">
+              <div class="mini-head">
+                <h3>Persone di cui ti fidi</h3>
+                <span id="viberCount"></span>
+              </div>
+              <div id="viberList" class="viber-list"></div>
+            </aside>
+          </div>
+
+          <div class="section-head">
+            <h2>Attivita community</h2>
+          </div>
+          <div id="activityFeed" class="activity-feed"></div>
+        </section>
+
+        <nav class="bottom-nav" aria-label="Navigazione principale">
+          <button class="bottom-nav-item is-active" data-bottom-nav="home" type="button">
+            <span class="bottom-nav-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M4 10.5 12 4l8 6.5V20a1 1 0 0 1-1 1h-5v-6h-4v6H5a1 1 0 0 1-1-1z" /></svg>
+            </span>
+            <span>Home</span>
+          </button>
+          <button class="bottom-nav-item" data-bottom-nav="community" type="button">
+            <span class="bottom-nav-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm8 0a3 3 0 1 0 0-6 3 3 0 0 0 0 6ZM3.5 20c.5-3.2 2-5 4.5-5s4 1.8 4.5 5M11.5 20c.5-3.2 2-5 4.5-5s4 1.8 4.5 5" /></svg>
+            </span>
+            <span>Community</span>
+          </button>
+          <a class="bottom-nav-item" href="./ux.html">
+            <span class="bottom-nav-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M4 20h4l11-11a2.8 2.8 0 0 0-4-4L4 16v4Zm11-14 3 3" /></svg>
+            </span>
+            <span>UX</span>
+          </a>
+          <button class="bottom-nav-item" data-bottom-nav="profile" type="button">
+            <span class="bottom-profile-face" aria-hidden="true"></span>
+            <span>Profilo</span>
+          </button>
+        </nav>
+
+        <aside id="detailDrawer" class="detail-drawer" aria-live="polite" aria-label="Dettaglio contenuto">
+          <button id="closeDrawer" class="icon-button close-drawer" type="button" aria-label="Chiudi" title="Chiudi">
+            <span aria-hidden="true">×</span>
+          </button>
+          <div id="drawerPoster" class="drawer-poster"></div>
+          <p id="drawerType" class="eyebrow"></p>
+          <h2 id="drawerTitle"></h2>
+          <p id="drawerDescription"></p>
+          <div class="drawer-actions">
+            <button id="drawerPlayButton" class="primary-action drawer-action" type="button"><span aria-hidden="true">▶</span> Riproduci</button>
+            <button id="drawerRecommendButton" class="secondary-action drawer-action" type="button"><span aria-hidden="true">＋</span> Consiglia</button>
+          </div>
+        </aside>
+
+        <section id="playerOverlay" class="player-overlay" aria-label="Player Vibely">
+          <div class="player-card">
+            <button id="closePlayer" class="icon-button close-player" type="button" aria-label="Chiudi player" title="Chiudi">
+              <span aria-hidden="true">×</span>
+            </button>
+            <div id="playerArt" class="player-art"></div>
+            <div class="player-meta">
+              <p class="eyebrow">Ora in visione</p>
+              <h2 id="playerTitle">After Midnight</h2>
+              <div class="player-progress"><span id="playerProgress"></span></div>
+              <button id="finishWatchButton" class="primary-action" type="button">Termina visione</button>
+            </div>
+          </div>
+        </section>
+
+        <section id="ratingNotification" class="rating-notification" aria-live="polite" aria-label="Notifica rating">
+          <div class="notification-shell">
+            <button id="dismissRating" class="icon-button close-rating" type="button" aria-label="Chiudi" title="Chiudi">
+              <span aria-hidden="true">×</span>
+            </button>
+            <p class="eyebrow">Ore dopo · telefono</p>
+            <h2 id="ratingTitle">Com'e andata?</h2>
+            <div id="starPicker" class="star-picker" aria-label="Rating"></div>
+            <p class="field-label">Mood del consiglio, massimo 3</p>
+            <div id="phoneMoodPicker" class="choice-row" aria-label="Mood del consiglio"></div>
+            <p class="field-label">Consiglia a un Viber fidato</p>
+            <div id="phoneViberPicker" class="viber-pick-list" aria-label="Viber fidati"></div>
+            <textarea id="recommendationNote" class="note-field" rows="3" placeholder="Aggiungi una nota, se vuoi"></textarea>
+            <div class="notification-actions">
+              <button id="sendRecommendation" class="primary-action" type="button">Consiglia</button>
+              <button id="watchTogether" class="secondary-action" type="button">Guardiamolo insieme</button>
+            </div>
+          </div>
+        </section>
+
+        <section id="tvRatingOverlay" class="tv-rating-overlay" aria-live="polite" aria-label="Rating da TV">
+          <div class="tv-rating-card">
+            <p class="eyebrow">Fine film · TV</p>
+            <h2 id="tvRatingTitle">Com'e andata?</h2>
+            <p class="tv-helper">Usa il telecomando: scegli voto, mood e Viber. Niente testo da scrivere.</p>
+            <div id="tvStarPicker" class="tv-star-picker" aria-label="Rating TV"></div>
+            <p class="field-label">Mood, massimo 3</p>
+            <div id="tvMoodPicker" class="choice-row tv-choice-row" aria-label="Mood TV"></div>
+            <p class="field-label">Viber</p>
+            <div id="tvViberPicker" class="viber-pick-list tv-viber-pick-list" aria-label="Viber TV"></div>
+            <div class="tv-actions">
+              <button id="tvSendRecommendation" class="primary-action" type="button">Consiglia</button>
+              <button id="tvWatchTogether" class="secondary-action" type="button">Guardiamolo insieme</button>
+              <button id="tvPhoneLater" class="secondary-action" type="button">Ricordamelo sul telefono</button>
+            </div>
+          </div>
+        </section>
+      </section>
+      <div id="appToast" class="app-toast" aria-live="polite"></div>
+    </main>
+
+    <script src="./app.js"></script>
+  </body>
+</html>
