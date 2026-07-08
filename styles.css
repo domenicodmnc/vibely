@@ -851,7 +851,6 @@ button {
 .rank-card .cover-art,
 .poster-card .cover-art,
 .recommendation-art .cover-art,
-.drawer-poster .cover-art,
 .player-art .cover-art {
   margin-top: 0;
   color: var(--cover-ink);
@@ -860,7 +859,6 @@ button {
 .rank-card .cover-art span,
 .poster-card .cover-art span,
 .recommendation-art .cover-art span,
-.drawer-poster .cover-art span,
 .player-art .cover-art span {
   margin-top: 0;
   color: inherit;
@@ -959,66 +957,6 @@ button {
   color: #cbd2de;
   font-size: 12px;
   padding: 4px 8px;
-}
-
-.detail-drawer {
-  position: fixed;
-  z-index: 20;
-  right: 18px;
-  bottom: 98px;
-  width: min(390px, calc(100vw - 36px));
-  border: 1px solid var(--line);
-  border-radius: var(--radius);
-  background: rgba(16, 19, 26, 0.94);
-  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.48);
-  backdrop-filter: blur(20px);
-  padding: 16px;
-  transform: translateY(calc(100% + 30px));
-  transition: transform 220ms ease;
-}
-
-.detail-drawer.is-open {
-  transform: translateY(0);
-}
-
-.close-drawer {
-  position: absolute;
-  right: 12px;
-  top: 12px;
-  z-index: 3;
-  background: rgba(8, 9, 13, 0.76);
-  backdrop-filter: blur(10px);
-}
-
-.drawer-poster {
-  height: 150px;
-  border-radius: var(--radius);
-  margin-bottom: 16px;
-  overflow: hidden;
-}
-
-.drawer-cover {
-  height: 150px;
-  min-height: 150px;
-  border-radius: var(--radius);
-}
-
-.detail-drawer h2 {
-  margin: 0 0 8px;
-}
-
-.detail-drawer p {
-  color: var(--muted);
-  line-height: 1.5;
-}
-
-.drawer-actions {
-  display: grid;
-  gap: 10px;
-}
-
-.drawer-action {
-  width: 100%;
 }
 
 .bottom-nav {
@@ -2347,10 +2285,6 @@ button {
     border-left: 0;
     border-radius: 18px 18px 0 0;
     padding: 8px 10px max(8px, env(safe-area-inset-bottom));
-  }
-
-  .detail-drawer {
-    bottom: 88px;
   }
 
   .hero {

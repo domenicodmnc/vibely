@@ -6,13 +6,6 @@ const profileGreeting = document.querySelector("#profileGreeting");
 const rankingRow = document.querySelector("#rankingRow");
 const posterGrid = document.querySelector("#posterGrid");
 const searchInput = document.querySelector("#searchInput");
-const drawer = document.querySelector("#detailDrawer");
-const drawerPoster = document.querySelector("#drawerPoster");
-const drawerType = document.querySelector("#drawerType");
-const drawerTitle = document.querySelector("#drawerTitle");
-const drawerDescription = document.querySelector("#drawerDescription");
-const drawerPlayButton = document.querySelector("#drawerPlayButton");
-const drawerRecommendButton = document.querySelector("#drawerRecommendButton");
 const recommendationFeed = document.querySelector("#recommendationFeed");
 const activityFeed = document.querySelector("#activityFeed");
 const viberList = document.querySelector("#viberList");
@@ -542,7 +535,6 @@ function backToProfiles() {
   builderView.classList.add("hidden");
   moodEntryView.classList.add("hidden");
   profileView.classList.remove("hidden");
-  drawer.classList.remove("is-open");
   closePlayer();
   closeRating();
   closeTvRating();
@@ -665,7 +657,7 @@ function renderCatalog() {
   posterGrid.innerHTML = visible.map(posterTemplate).join("");
 
   document.querySelectorAll("[data-title]").forEach((button) => {
-    button.addEventListener("click", () => openDrawer(button.dataset.title));
+    button.addEventListener("click", () => openPlayer(button.dataset.title));
   });
 }
 
@@ -801,20 +793,6 @@ function compactRecommendationNote(note, item, viber) {
     return note.slice(0, 79).trim() + "...";
   }
   return note;
-}
-
-function openDrawer(title) {
-  const item = getItem(title);
-  activeTitle = item.title;
-  renderCover(drawerPoster, item, "drawer-cover");
-  drawerType.textContent = item.label;
-  drawerTitle.textContent = item.title;
-  drawerDescription.textContent = item.description;
-  drawer.classList.add("is-open");
-}
-
-function closeDrawerView() {
-  drawer.classList.remove("is-open");
 }
 
 function openPlayer(title) {
@@ -1064,19 +1042,6 @@ document.querySelector("#skipMoodEntry").addEventListener("click", () => enterHo
 
 document.querySelector("#backProfiles").addEventListener("click", backToProfiles);
 
-document.querySelector("#closeDrawer").addEventListener("click", closeDrawerView);
-
-document.addEventListener("keydown", (event) => {
-  if (event.key === "Escape") closeDrawerView();
-});
-
-document.addEventListener("click", (event) => {
-  if (!drawer.classList.contains("is-open")) return;
-  if (drawer.contains(event.target)) return;
-  if (event.target.closest("[data-title]")) return;
-  closeDrawerView();
-});
-
 document.querySelector("#heroPlayButton").addEventListener("click", () => openPlayer("After Midnight"));
 document.querySelector("#simulateFinish")?.addEventListener("click", () => openTvRating(activeTitle));
 document.querySelector("#simulatePhoneReminder")?.addEventListener("click", () => openPhoneRating(activeTitle));
@@ -1088,9 +1053,6 @@ document.querySelector("#watchTogether").addEventListener("click", () => commitI
 document.querySelector("#tvSendRecommendation").addEventListener("click", () => commitInteraction("recommend"));
 document.querySelector("#tvWatchTogether").addEventListener("click", () => commitInteraction("watch"));
 document.querySelector("#tvPhoneLater").addEventListener("click", schedulePhoneReminder);
-
-drawerPlayButton.addEventListener("click", () => openPlayer(activeTitle));
-drawerRecommendButton.addEventListener("click", () => openRating(activeTitle));
 
 document.querySelectorAll("[data-bottom-nav]").forEach((button) => {
   button.addEventListener("click", () => {
