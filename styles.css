@@ -271,7 +271,9 @@ button {
 }
 
 .mood-entry-view {
-  min-height: 100vh;
+  height: 100dvh;
+  min-height: 100dvh;
+  overflow: hidden;
   background:
     radial-gradient(circle at 18% 18%, rgba(55, 214, 181, 0.22), transparent 28%),
     radial-gradient(circle at 82% 22%, rgba(242, 193, 78, 0.16), transparent 24%),
@@ -279,34 +281,43 @@ button {
 }
 
 .mood-entry-shell {
-  width: min(1040px, calc(100% - 36px));
+  width: min(1120px, calc(100% - 36px));
+  height: calc(100dvh - 72px);
   margin: 0 auto;
-  padding: clamp(36px, 6vw, 72px) 0;
+  padding: clamp(24px, 4vh, 42px) 0 18px;
+  display: grid;
+  grid-template-rows: auto auto auto minmax(0, 1fr) auto;
+  overflow: hidden;
 }
 
 .mood-entry-shell h1 {
   max-width: 780px;
   margin: 0;
-  font-size: clamp(44px, 7vw, 96px);
-  line-height: 0.95;
+  font-size: clamp(42px, 5.6vw, 78px);
+  line-height: 0.98;
 }
 
 .mood-entry-shell > p:not(.eyebrow) {
   max-width: 620px;
   color: #d6dbe5;
-  font-size: 18px;
-  line-height: 1.55;
+  font-size: 16px;
+  line-height: 1.45;
+  margin: 14px 0 0;
 }
 
 .mood-entry-grid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 12px;
-  margin-top: 28px;
+  min-height: 0;
+  margin-top: 22px;
+  overflow-y: auto;
+  padding-bottom: 8px;
+  scrollbar-width: thin;
 }
 
 .mood-card {
-  min-height: 144px;
+  min-height: 118px;
   border: 1px solid var(--line);
   border-radius: var(--radius);
   color: var(--ink);
@@ -354,7 +365,7 @@ button {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
-  margin-top: 22px;
+  margin-top: 14px;
 }
 
 .builder-view {
@@ -2419,6 +2430,35 @@ button {
   }
 }
 
+@media (min-width: 981px) and (max-height: 820px) {
+  .mood-entry-shell {
+    padding-top: 18px;
+  }
+
+  .mood-entry-shell h1 {
+    font-size: clamp(38px, 4.6vw, 64px);
+  }
+
+  .mood-entry-grid {
+    gap: 10px;
+    margin-top: 16px;
+  }
+
+  .mood-card {
+    min-height: 94px;
+    padding: 13px;
+  }
+
+  .mood-card strong {
+    font-size: 17px;
+  }
+
+  .mood-card span {
+    margin-top: 3px;
+    font-size: 14px;
+  }
+}
+
 @media (min-width: 1500px) {
   .profile-panel {
     width: min(1180px, 100%);
@@ -2527,7 +2567,7 @@ button {
   }
 
   .mood-entry-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
   .tv-viber-pick-list,
