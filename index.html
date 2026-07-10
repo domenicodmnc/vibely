@@ -10,6 +10,11 @@
     <main id="app" class="app">
       <section id="profileView" class="profile-view" aria-labelledby="profile-title">
         <div class="brand-mark">Vibely</div>
+        <div class="profile-feature" aria-hidden="true">
+          <span class="top-badge">Top 10</span>
+          <strong>Glass House</strong>
+          <p>Oggi al n°5 tra i film piu consigliati dai tuoi Vibers</p>
+        </div>
         <div class="profile-panel">
           <h1 id="profile-title">Chi guarda stasera?</h1>
           <div class="profiles" aria-label="Scegli profilo">
@@ -29,8 +34,11 @@
               <span class="add-icon">+</span>
               <span>Aggiungi</span>
             </button>
+            <button id="openBuilderFromProfiles" class="profile-card edit-profile" type="button">
+              <span class="edit-icon">✎</span>
+              <span>Modifica</span>
+            </button>
           </div>
-          <button id="openBuilderFromProfiles" class="builder-entry" type="button">Costruisci profilo Viber</button>
           <a class="case-study-link" href="./ux.html">Leggi UX case study</a>
         </div>
       </section>
@@ -245,21 +253,6 @@
             <span>Profilo</span>
           </button>
         </nav>
-
-        <section id="playerOverlay" class="player-overlay" aria-label="Player Vibely">
-          <div class="player-card">
-            <button id="closePlayer" class="icon-button close-player" type="button" aria-label="Chiudi player" title="Chiudi">
-              <span aria-hidden="true">×</span>
-            </button>
-            <div id="playerArt" class="player-art"></div>
-            <div class="player-meta">
-              <p class="eyebrow">Ora in visione</p>
-              <h2 id="playerTitle">After Midnight</h2>
-              <div class="player-progress"><span id="playerProgress"></span></div>
-              <button id="finishWatchButton" class="primary-action" type="button">Termina visione</button>
-            </div>
-          </div>
-        </section>
 
         <section id="ratingNotification" class="rating-notification" aria-live="polite" aria-label="Notifica rating">
           <div class="notification-shell">

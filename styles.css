@@ -46,13 +46,15 @@ button {
 .profile-view {
   min-height: 100vh;
   display: grid;
-  place-items: center;
-  padding: 28px;
+  place-items: end center;
+  padding: 28px 28px clamp(42px, 8vh, 84px);
   background:
-    linear-gradient(rgba(8, 9, 13, 0.74), rgba(8, 9, 13, 0.92)),
-    radial-gradient(circle at 20% 10%, rgba(55, 214, 181, 0.24), transparent 30%),
-    radial-gradient(circle at 78% 20%, rgba(231, 65, 95, 0.23), transparent 28%),
-    linear-gradient(130deg, #11151d 0%, #07080b 65%);
+    linear-gradient(180deg, rgba(8, 9, 13, 0.02) 0%, rgba(8, 9, 13, 0.42) 42%, rgba(8, 9, 13, 0.95) 100%),
+    linear-gradient(90deg, rgba(8, 9, 13, 0.94) 0%, rgba(8, 9, 13, 0.44) 52%, rgba(8, 9, 13, 0.12) 100%),
+    url("./assets/posters/glass-house.jpg"),
+    #08090d;
+  background-position: center, center, center 24%, center;
+  background-size: cover, cover, cover, cover;
   position: relative;
   overflow: hidden;
 }
@@ -60,12 +62,12 @@ button {
 .profile-view::before {
   content: "";
   position: absolute;
-  inset: 8vh -8vw auto -8vw;
-  height: 42vh;
+  inset: auto 0 0;
+  height: 42%;
   background:
-    linear-gradient(100deg, rgba(255, 255, 255, 0.04), transparent),
-    repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.08) 0 1px, transparent 1px 116px);
-  transform: skewY(-7deg);
+    radial-gradient(ellipse at 50% 100%, rgba(242, 193, 78, 0.22), transparent 42%),
+    linear-gradient(180deg, transparent, rgba(8, 9, 13, 0.78));
+  pointer-events: none;
 }
 
 .brand-mark {
@@ -76,25 +78,65 @@ button {
   font-size: 28px;
   font-weight: 800;
   letter-spacing: 0;
+  z-index: 1;
+}
+
+.profile-feature {
+  position: absolute;
+  left: clamp(24px, 6vw, 90px);
+  top: 20vh;
+  z-index: 1;
+  max-width: 520px;
+  color: var(--ink);
+}
+
+.profile-feature strong {
+  display: block;
+  margin-top: 14px;
+  font-size: clamp(46px, 7vw, 92px);
+  line-height: 0.92;
+}
+
+.profile-feature p {
+  margin: 12px 0 0;
+  color: #d6dbe5;
+  font-size: clamp(17px, 2vw, 22px);
+  line-height: 1.35;
+}
+
+.top-badge {
+  width: fit-content;
+  display: inline-flex;
+  align-items: center;
+  min-height: 30px;
+  border-radius: 4px;
+  color: #fff;
+  background: #e50914;
+  padding: 0 9px;
+  font-size: 12px;
+  font-weight: 950;
+  text-transform: uppercase;
 }
 
 .profile-panel {
-  width: min(880px, 100%);
+  width: min(760px, 100%);
   position: relative;
+  z-index: 1;
   text-align: center;
 }
 
 .profile-panel h1 {
-  margin: 0 0 34px;
-  font-size: clamp(32px, 5vw, 58px);
+  margin: 0 0 22px;
+  color: rgba(245, 247, 251, 0.9);
+  font-size: clamp(24px, 4vw, 42px);
   line-height: 1.04;
   letter-spacing: 0;
 }
 
 .profiles {
   display: grid;
-  grid-template-columns: repeat(4, minmax(120px, 1fr));
-  gap: 18px;
+  grid-template-columns: repeat(5, minmax(92px, 1fr));
+  gap: clamp(14px, 2.4vw, 26px);
 }
 
 .profile-card {
@@ -102,10 +144,12 @@ button {
   background: transparent;
   color: var(--muted);
   display: grid;
-  gap: 14px;
+  gap: 10px;
   justify-items: center;
   min-width: 0;
   padding: 0;
+  font-size: clamp(15px, 1.8vw, 22px);
+  font-weight: 820;
 }
 
 .profile-card:hover,
@@ -117,13 +161,16 @@ button {
 .profile-card:hover .avatar,
 .profile-card:focus-visible .avatar,
 .profile-card:hover .add-icon,
-.profile-card:focus-visible .add-icon {
+.profile-card:focus-visible .add-icon,
+.profile-card:hover .edit-icon,
+.profile-card:focus-visible .edit-icon {
   border-color: var(--ink);
   transform: translateY(-2px);
 }
 
 .avatar,
-.add-icon {
+.add-icon,
+.edit-icon {
   width: min(150px, 28vw);
   aspect-ratio: 1;
   border: 3px solid rgba(255, 255, 255, 0.12);
@@ -181,6 +228,12 @@ button {
   line-height: 1;
 }
 
+.edit-icon {
+  color: var(--ink);
+  background: rgba(255, 255, 255, 0.16);
+  font-size: 42px;
+}
+
 .builder-entry {
   margin-top: 34px;
   min-height: 46px;
@@ -194,18 +247,20 @@ button {
 
 .case-study-link {
   width: fit-content;
-  min-height: 40px;
+  min-height: 36px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  margin-top: 14px;
+  margin-top: 22px;
   border: 1px solid var(--line);
   border-radius: var(--radius);
   color: var(--ink);
-  background: rgba(255, 255, 255, 0.06);
-  padding: 0 14px;
+  background: rgba(8, 9, 13, 0.44);
+  backdrop-filter: blur(14px);
+  padding: 0 13px;
   text-decoration: none;
-  font-weight: 850;
+  font-size: 14px;
+  font-weight: 780;
 }
 
 .mood-entry-view {
@@ -584,12 +639,12 @@ button {
 
 .poster-hero-art {
   background:
-    linear-gradient(90deg, rgba(8, 9, 13, 0.95) 0%, rgba(8, 9, 13, 0.72) 38%, rgba(8, 9, 13, 0.1) 100%),
-    linear-gradient(0deg, rgba(8, 9, 13, 1), rgba(8, 9, 13, 0) 42%),
+    linear-gradient(90deg, rgba(8, 9, 13, 0.98) 0%, rgba(8, 9, 13, 0.72) 30%, rgba(8, 9, 13, 0.12) 72%, rgba(8, 9, 13, 0.3) 100%),
+    linear-gradient(0deg, rgba(8, 9, 13, 1) 0%, rgba(8, 9, 13, 0.54) 24%, rgba(8, 9, 13, 0) 56%),
     url("./assets/posters/after-midnight.jpg"),
     linear-gradient(125deg, #151e2a 0%, #0a0e14 40%, #301721 100%);
-  background-position: center right, center, center right 18%, center;
-  background-size: cover, cover, min(42vw, 560px) auto, cover;
+  background-position: center, center, center right 20%, center;
+  background-size: cover, cover, cover, cover;
   background-repeat: no-repeat;
 }
 
@@ -851,16 +906,14 @@ button {
 
 .rank-card .cover-art,
 .poster-card .cover-art,
-.recommendation-art .cover-art,
-.player-art .cover-art {
+.recommendation-art .cover-art {
   margin-top: 0;
   color: var(--cover-ink);
 }
 
 .rank-card .cover-art span,
 .poster-card .cover-art span,
-.recommendation-art .cover-art span,
-.player-art .cover-art span {
+.recommendation-art .cover-art span {
   margin-top: 0;
   color: inherit;
 }
@@ -1368,7 +1421,6 @@ button {
   box-shadow: 0 0 0 4px rgba(242, 193, 78, 0.12);
 }
 
-.player-overlay,
 .rating-notification {
   position: fixed;
   z-index: 30;
@@ -1381,77 +1433,9 @@ button {
   transition: opacity 180ms ease;
 }
 
-.player-overlay {
-  background: rgba(3, 4, 7, 0.84);
-  backdrop-filter: blur(18px);
-}
-
-.player-overlay.is-open,
 .rating-notification.is-open {
   opacity: 1;
   pointer-events: auto;
-}
-
-.player-card {
-  position: relative;
-  width: min(980px, 100%);
-  border: 1px solid var(--line);
-  border-radius: var(--radius);
-  background: #08090d;
-  overflow: hidden;
-  box-shadow: 0 28px 90px rgba(0, 0, 0, 0.6);
-}
-
-.player-art {
-  height: min(52vh, 420px);
-  position: relative;
-  overflow: hidden;
-}
-
-.player-art::before {
-  content: none;
-}
-
-.player-cover {
-  height: 100%;
-  min-height: 100%;
-  padding: clamp(20px, 5vw, 44px);
-}
-
-.player-meta {
-  padding: 18px;
-}
-
-.player-meta h2 {
-  margin: 0 0 16px;
-  font-size: clamp(28px, 5vw, 54px);
-}
-
-.player-progress {
-  height: 7px;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.16);
-  overflow: hidden;
-  margin-bottom: 18px;
-}
-
-.player-progress span {
-  display: block;
-  width: 0;
-  height: 100%;
-  background: var(--accent);
-  transition: width 700ms ease;
-}
-
-.player-overlay.is-open .player-progress span {
-  width: 94%;
-}
-
-.close-player {
-  position: absolute;
-  right: 14px;
-  top: 14px;
-  z-index: 1;
 }
 
 .rating-notification {
@@ -1749,7 +1733,7 @@ button {
 .ux-case {
   width: min(1240px, calc(100% - 36px));
   margin: 0 auto;
-  padding: 0 0 84px;
+  padding: 0 0 132px;
 }
 
 .ux-case-nav {
@@ -2199,15 +2183,19 @@ button {
   }
 
   .hero {
-    min-height: min(680px, calc(100vh - 60px));
+    min-height: min(760px, calc(92vh - 60px));
+    grid-template-columns: minmax(0, 1fr);
+    align-items: end;
+    padding: 140px clamp(24px, 4vw, 64px) 86px;
   }
 
   .hero h1 {
-    font-size: clamp(54px, 6vw, 88px);
+    font-size: clamp(58px, 7vw, 104px);
   }
 
   .hero-description {
-    font-size: 16px;
+    max-width: 680px;
+    font-size: 20px;
     line-height: 1.45;
   }
 
@@ -2215,37 +2203,62 @@ button {
     margin-top: 22px;
   }
 
+  .hero-actions .primary-action,
+  .hero-actions .secondary-action {
+    min-height: 52px;
+    padding: 0 22px;
+    font-size: 18px;
+  }
+
+  .watch-card {
+    display: none;
+  }
+
   .content-shell {
-    padding: 28px clamp(24px, 4vw, 64px) 108px;
+    margin-top: -64px;
+    padding: 0 clamp(24px, 4vw, 64px) 108px;
+    position: relative;
+    z-index: 2;
   }
 
   .ranking-row,
   .poster-grid {
-    grid-auto-columns: clamp(168px, 15vw, 220px);
-    gap: 12px;
+    grid-auto-columns: clamp(300px, 24vw, 430px);
+    gap: 10px;
   }
 
   .rank-card,
   .poster-card {
-    min-height: 258px;
+    min-height: 196px;
+    background: #14171e;
   }
 
   .poster-cover,
   .rank-cover {
-    min-height: 184px;
-    height: 184px;
+    min-height: 132px;
+    height: 132px;
   }
 
   .rank-number {
-    bottom: 58px;
-    width: 46px;
-    height: 46px;
-    font-size: 26px;
+    bottom: 50px;
+    width: 42px;
+    height: 42px;
+    font-size: 24px;
   }
 
   .rank-body,
   .poster-body {
-    padding: 11px;
+    padding: 10px 11px 11px;
+  }
+
+  .rank-body strong,
+  .poster-card strong {
+    font-size: 15px;
+  }
+
+  .rank-body span,
+  .poster-card span {
+    font-size: 12px;
   }
 
   .recommendation-feed {
@@ -2372,12 +2385,12 @@ button {
   }
 
   .hero {
-    min-height: min(760px, calc(100vh - 60px));
+    min-height: min(820px, calc(92vh - 60px));
   }
 
   .ranking-row,
   .poster-grid {
-    grid-auto-columns: clamp(200px, 13vw, 240px);
+    grid-auto-columns: clamp(360px, 23vw, 460px);
   }
 
   .recommendation-feed {
@@ -2525,7 +2538,51 @@ button {
   }
 
   .profiles {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px 18px;
+  }
+
+  .profile-view {
+    place-items: end center;
+    min-height: 100dvh;
+    padding: 22px 18px max(26px, env(safe-area-inset-bottom));
+    background-position: center, center, center top, center;
+  }
+
+  .profile-feature {
+    left: 22px;
+    right: 22px;
+    top: 12vh;
+    max-width: 310px;
+  }
+
+  .profile-feature strong {
+    font-size: 38px;
+  }
+
+  .profile-feature p {
+    font-size: 14px;
+  }
+
+  .top-badge {
+    min-height: 24px;
+    font-size: 10px;
+  }
+
+  .profile-panel h1 {
+    margin-bottom: 18px;
+    font-size: 24px;
+  }
+
+  .profile-card {
+    gap: 8px;
+    font-size: 14px;
+  }
+
+  .avatar,
+  .add-icon,
+  .edit-icon {
+    width: min(96px, 26vw);
   }
 
   .topbar {

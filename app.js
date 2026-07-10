@@ -10,10 +10,6 @@ const recommendationFeed = document.querySelector("#recommendationFeed");
 const activityFeed = document.querySelector("#activityFeed");
 const viberList = document.querySelector("#viberList");
 const viberCount = document.querySelector("#viberCount");
-const playerOverlay = document.querySelector("#playerOverlay");
-const playerArt = document.querySelector("#playerArt");
-const playerTitle = document.querySelector("#playerTitle");
-const playerProgress = document.querySelector("#playerProgress");
 const ratingNotification = document.querySelector("#ratingNotification");
 const ratingTitle = document.querySelector("#ratingTitle");
 const starPicker = document.querySelector("#starPicker");
@@ -535,7 +531,6 @@ function backToProfiles() {
   builderView.classList.add("hidden");
   moodEntryView.classList.add("hidden");
   profileView.classList.remove("hidden");
-  closePlayer();
   closeRating();
   closeTvRating();
 }
@@ -799,22 +794,7 @@ function openPlayer(title) {
   const item = getItem(title);
   pendingTitle = item.title;
   activeTitle = item.title;
-  playerTitle.textContent = item.title;
-  renderCover(playerArt, item, "player-cover");
-  playerProgress.style.width = "0";
-  playerOverlay.classList.add("is-open");
-  window.setTimeout(() => {
-    playerProgress.style.width = "94%";
-  }, 50);
-}
-
-function closePlayer() {
-  playerOverlay.classList.remove("is-open");
-}
-
-function finishWatching() {
-  closePlayer();
-  window.setTimeout(() => openTvRating(pendingTitle), 180);
+  openTvRating(item.title);
 }
 
 function openRating(title) {
@@ -1045,8 +1025,6 @@ document.querySelector("#backProfiles").addEventListener("click", backToProfiles
 document.querySelector("#heroPlayButton").addEventListener("click", () => openPlayer("After Midnight"));
 document.querySelector("#simulateFinish")?.addEventListener("click", () => openTvRating(activeTitle));
 document.querySelector("#simulatePhoneReminder")?.addEventListener("click", () => openPhoneRating(activeTitle));
-document.querySelector("#closePlayer").addEventListener("click", closePlayer);
-document.querySelector("#finishWatchButton").addEventListener("click", finishWatching);
 document.querySelector("#dismissRating").addEventListener("click", closeRating);
 document.querySelector("#sendRecommendation").addEventListener("click", () => commitInteraction("recommend"));
 document.querySelector("#watchTogether").addEventListener("click", () => commitInteraction("watch"));
@@ -1088,6 +1066,16 @@ searchInput.addEventListener("input", (event) => {
   query = event.target.value.trim().toLowerCase();
   renderCatalog();
 });
+
+function openInitialRouteFromHash() {
+  const target = window.location.hash.replace("#", "");
+  if (target === "home" || target === "communitySection") {
+    enterHome(viberProfile.name || currentProfile, normaliseMoodList(viberProfile.moods));
+    if (target === "communitySection") {
+      window.setTimeout(() => scrollToCommunity(), 120);
+    }
+  }
+}
 
 builderName.addEventListener("input", updateBuilderPreview);
 
@@ -1133,3 +1121,4 @@ builderForm.addEventListener("submit", (event) => {
 });
 
 renderStars();
+openInitialRouteFromHash();
