@@ -2027,6 +2027,10 @@ button {
   grid-template-columns: repeat(4, minmax(0, 1fr));
 }
 
+.ux-two-insights {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
 .ux-principles article,
 .ux-system-explainer article,
 .ux-scope-grid article,
@@ -2932,6 +2936,7 @@ button {
   .ux-system-explainer,
   .ux-scope-grid,
   .ux-ia-grid,
+  .ux-two-insights,
   .ux-split-panel,
   .ux-case-summary {
     grid-template-columns: 1fr;
