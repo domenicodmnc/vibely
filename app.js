@@ -31,6 +31,7 @@ const previewName = document.querySelector("#previewName");
 const previewSummary = document.querySelector("#previewSummary");
 const communitySection = document.querySelector("#communitySection");
 const appToast = document.querySelector("#appToast");
+const srStatus = document.querySelector("#srStatus");
 
 let activeFilter = "all";
 let activeMood = "all";
@@ -46,6 +47,17 @@ let selectedViberName = "Elisa";
 let activeRatingSurface = "phone";
 let builderReturnView = "profiles";
 let toastTimer;
+let lastDialogTrigger = null;
+let lastBuilderTrigger = null;
+
+const focusableSelector = [
+  "a[href]",
+  "button:not([disabled])",
+  "input:not([disabled])",
+  "select:not([disabled])",
+  "textarea:not([disabled])",
+  "[tabindex]:not([tabindex='-1'])"
+].join(",");
 
 const storageKey = "vibely-mvp-community-v1";
 const profileStorageKey = "vibely-mvp-viber-profile-v1";
@@ -478,6 +490,10 @@ function initials(name) {
 function showToast(message) {
   window.clearTimeout(toastTimer);
   appToast.textContent = message;
+  srStatus.textContent = "";
+  window.setTimeout(() => {
+    srStatus.textContent = message;
+  }, 20);
   appToast.classList.add("is-visible");
   toastTimer = window.setTimeout(() => {
     appToast.classList.remove("is-visible");
@@ -486,18 +502,101 @@ function showToast(message) {
 
 function setBottomNavActive(target) {
   document.querySelectorAll("[data-bottom-nav]").forEach((button) => {
-    button.classList.toggle("is-active", button.dataset.bottomNav === target);
+    const active = button.dataset.bottomNav === target;
+    button.classList.toggle("is-active", active);
+    button.setAttribute("aria-pressed", String(active));
   });
 }
 
 function scrollHomeToTop() {
   setBottomNavActive("home");
-  window.scrollTo({ top: 0, behavior: "smooth" });
+  window.scrollTo({ top: 0, behavior: prefersReducedMotion() ? "auto" : "smooth" });
 }
 
 function scrollToCommunity() {
   setBottomNavActive("community");
-  communitySection.scrollIntoView({ behavior: "smooth", block: "start" });
+  communitySection.scrollIntoView({ behavior: prefersReducedMotion() ? "auto" : "smooth", block: "start" });
+}
+
+function prefersReducedMotion() {
+  return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+}
+
+function getFocusable(container) {
+  return [...container.querySelectorAll(focusableSelector)]
+    .filter((element) => element.offsetParent !== null && !element.getAttribute("aria-hidden"));
+}
+
+function focusFirst(container, preferredSelector) {
+  const preferred = preferredSelector ? container.querySelector(preferredSelector) : null;
+  const target = preferred || getFocusable(container)[0] || container;
+  window.setTimeout(() => target.focus({ preventScroll: true }), 0);
+}
+
+function restoreDialogFocus() {
+  if (lastDialogTrigger && document.contains(lastDialogTrigger) && !lastDialogTrigger.closest("[aria-hidden='true']")) {
+    lastDialogTrigger.focus({ preventScroll: true });
+    lastDialogTrigger = null;
+    return;
+  }
+
+  const fallback = document.querySelector(`[data-share-title="${pendingTitle}"]`)
+    || document.querySelector(`[data-title="${pendingTitle}"]`)
+    || document.querySelector("#heroPlayButton");
+  fallback?.focus({ preventScroll: true });
+  lastDialogTrigger = null;
+}
+
+function openDialog(dialog, preferredSelector) {
+  lastDialogTrigger = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+  dialog.removeAttribute("inert");
+  dialog.classList.add("is-open");
+  dialog.setAttribute("aria-hidden", "false");
+  focusFirst(dialog, preferredSelector);
+}
+
+function closeDialog(dialog, restoreFocus = true) {
+  dialog.classList.remove("is-open");
+  dialog.setAttribute("aria-hidden", "true");
+  dialog.setAttribute("inert", "");
+  if (restoreFocus) restoreDialogFocus();
+}
+
+function activeDialog() {
+  if (ratingNotification.classList.contains("is-open")) return ratingNotification;
+  if (tvRatingOverlay.classList.contains("is-open")) return tvRatingOverlay;
+  return null;
+}
+
+function keepFocusInDialog(event) {
+  const dialog = activeDialog();
+  if (!dialog) return;
+
+  if (event.key === "Escape") {
+    event.preventDefault();
+    if (dialog === ratingNotification) closeRating();
+    if (dialog === tvRatingOverlay) closeTvRating();
+    return;
+  }
+
+  if (event.key !== "Tab") return;
+
+  const focusable = getFocusable(dialog);
+  if (!focusable.length) {
+    event.preventDefault();
+    dialog.focus();
+    return;
+  }
+
+  const first = focusable[0];
+  const last = focusable[focusable.length - 1];
+  if (event.shiftKey && document.activeElement === first) {
+    event.preventDefault();
+    last.focus();
+  } else if (!event.shiftKey && document.activeElement === last) {
+    event.preventDefault();
+    first.focus();
+  }
 }
 
 function openMoodEntry(profile) {
@@ -508,6 +607,7 @@ function openMoodEntry(profile) {
   builderView.classList.add("hidden");
   homeView.classList.add("hidden");
   renderEntryMoodPicker();
+  focusFirst(moodEntryView, "[data-entry-mood]");
 }
 
 function enterHome(profile, moods = []) {
@@ -524,6 +624,7 @@ function openHome(profile) {
   homeView.classList.remove("hidden");
   setBottomNavActive("home");
   render();
+  focusFirst(homeView, "#heroPlayButton");
 }
 
 function backToProfiles() {
@@ -531,17 +632,20 @@ function backToProfiles() {
   builderView.classList.add("hidden");
   moodEntryView.classList.add("hidden");
   profileView.classList.remove("hidden");
-  closeRating();
-  closeTvRating();
+  closeRating(false);
+  closeTvRating(false);
+  focusFirst(profileView, ".profile-card[data-profile]");
 }
 
 function openBuilder(returnView) {
+  lastBuilderTrigger = document.activeElement instanceof HTMLElement ? document.activeElement : null;
   builderReturnView = returnView;
   profileView.classList.add("hidden");
   moodEntryView.classList.add("hidden");
   homeView.classList.add("hidden");
   builderView.classList.remove("hidden");
   renderBuilder();
+  focusFirst(builderView, "#builderName");
 }
 
 function closeBuilderView() {
@@ -553,6 +657,12 @@ function closeBuilderView() {
   } else {
     profileView.classList.remove("hidden");
   }
+  if (lastBuilderTrigger && document.contains(lastBuilderTrigger)) {
+    lastBuilderTrigger.focus({ preventScroll: true });
+  } else {
+    focusFirst(builderReturnView === "home" ? homeView : profileView, builderReturnView === "home" ? "[data-bottom-nav='profile']" : ".profile-card[data-profile]");
+  }
+  lastBuilderTrigger = null;
 }
 
 function render() {
@@ -563,8 +673,9 @@ function render() {
 function renderEntryMoodPicker() {
   entryMoodPicker.innerHTML = moodOptions.map((mood) => {
     const selected = selectedMoods.includes(mood.id) ? " is-selected" : "";
+    const pressed = selectedMoods.includes(mood.id);
     return `
-      <button class="mood-card${selected}" data-entry-mood="${mood.id}" type="button" style="--mood-bg: ${mood.color}">
+      <button class="mood-card${selected}" data-entry-mood="${mood.id}" type="button" style="--mood-bg: ${mood.color}" aria-pressed="${pressed}" aria-label="${mood.label}: ${mood.example}${pressed ? ", selezionato" : ""}">
         <strong>${mood.label}</strong>
         <span>${mood.example}</span>
       </button>
@@ -573,7 +684,11 @@ function renderEntryMoodPicker() {
 
   document.querySelectorAll("[data-entry-mood]").forEach((button) => {
     button.addEventListener("click", () => {
-      toggleMoodSelection(button.dataset.entryMood, () => renderEntryMoodPicker());
+      const mood = button.dataset.entryMood;
+      toggleMoodSelection(mood, () => {
+        renderEntryMoodPicker();
+        entryMoodPicker.querySelector(`[data-entry-mood="${mood}"]`)?.focus({ preventScroll: true });
+      });
     });
   });
 }
@@ -582,10 +697,14 @@ function renderBuilder() {
   builderName.value = viberProfile.name || currentProfile;
   recommendationMode.value = viberProfile.mode || "Dopo ogni visione";
   document.querySelectorAll("[data-builder-mood]").forEach((button) => {
-    button.classList.toggle("is-selected", normaliseMoodList(viberProfile.moods).includes(button.dataset.builderMood));
+    const selected = normaliseMoodList(viberProfile.moods).includes(button.dataset.builderMood);
+    button.classList.toggle("is-selected", selected);
+    button.setAttribute("aria-pressed", String(selected));
   });
   document.querySelectorAll("[data-builder-genre]").forEach((button) => {
-    button.classList.toggle("is-selected", viberProfile.genres.includes(button.dataset.builderGenre));
+    const selected = viberProfile.genres.includes(button.dataset.builderGenre);
+    button.classList.toggle("is-selected", selected);
+    button.setAttribute("aria-pressed", String(selected));
   });
 
   trustBuilderList.innerHTML = [...vibers]
@@ -597,7 +716,7 @@ function renderBuilder() {
           <strong>${viber.name}</strong>
           <p>${viber.relation}</p>
         </span>
-        <input data-trust-viber="${viber.name}" type="range" min="0" max="100" value="${viber.trust}" />
+        <input data-trust-viber="${viber.name}" type="range" min="0" max="100" value="${viber.trust}" aria-label="Fiducia verso ${viber.name}" />
         <span class="trust-value">${viber.trust}%</span>
       </label>
     `).join("");
@@ -649,7 +768,9 @@ function renderCatalog() {
   });
 
   rankingRow.innerHTML = items.slice(0, 10).map((item, index) => rankTemplate(item, index + 1)).join("");
-  posterGrid.innerHTML = visible.map(posterTemplate).join("");
+  posterGrid.innerHTML = visible.length
+    ? visible.map(posterTemplate).join("")
+    : emptyStateTemplate("Nessun contenuto trovato", "Prova un altro mood, categoria o termine di ricerca.");
 
   document.querySelectorAll("[data-title]").forEach((button) => {
     button.addEventListener("click", () => openPlayer(button.dataset.title));
@@ -661,9 +782,15 @@ function renderCommunity() {
   const trustedRecommendations = getTrustedRecommendations();
 
   viberCount.textContent = `${vibers.length} fidati`;
-  viberList.innerHTML = trustedVibers.map(viberTemplate).join("");
-  recommendationFeed.innerHTML = trustedRecommendations.slice(0, 5).map(recommendationTemplate).join("");
-  activityFeed.innerHTML = communityState.activities.slice(0, 6).map(activityTemplate).join("");
+  viberList.innerHTML = trustedVibers.length
+    ? trustedVibers.map(viberTemplate).join("")
+    : emptyStateTemplate("Nessun Viber", "Aggiungi persone fidate dal profilo.");
+  recommendationFeed.innerHTML = trustedRecommendations.length
+    ? trustedRecommendations.slice(0, 5).map(recommendationTemplate).join("")
+    : emptyStateTemplate("Nessun consiglio", "Quando un Viber ti consiglia qualcosa, lo trovi qui.");
+  activityFeed.innerHTML = communityState.activities.length
+    ? communityState.activities.slice(0, 6).map(activityTemplate).join("")
+    : emptyStateTemplate("Nessuna attivita", "Rating, consigli e approvazioni appariranno in questa riga.");
 
   document.querySelectorAll("[data-watch-title]").forEach((button) => {
     button.addEventListener("click", () => openPlayer(button.dataset.watchTitle));
@@ -680,7 +807,7 @@ function renderCommunity() {
 
 function rankTemplate(item, rank) {
   return `
-    <button class="rank-card" data-title="${item.title}" type="button">
+    <button class="rank-card" data-title="${item.title}" type="button" aria-label="Apri ${item.title}, ${item.label}, posizione ${rank} nella Top 10">
       ${coverArtTemplate(item, "rank-cover")}
       <span class="rank-number">${rank}</span>
       <span class="rank-body">
@@ -693,7 +820,7 @@ function rankTemplate(item, rank) {
 
 function posterTemplate(item) {
   return `
-    <button class="poster-card" data-title="${item.title}" type="button">
+    <button class="poster-card" data-title="${item.title}" type="button" aria-label="Apri ${item.title}, ${item.label}, mood ${moodLabelList(getItemMoods(item))}">
       ${coverArtTemplate(item, "poster-cover")}
       <span class="poster-body">
         <strong>${item.title}</strong>
@@ -732,8 +859,8 @@ function recommendationTemplate(recommendation) {
         </div>
       </div>
       <div class="recommendation-actions">
-        <button class="small-action is-primary" data-watch-title="${item.title}" type="button">Guarda</button>
-        <button class="small-action" data-share-title="${item.title}" type="button">Ricambia</button>
+        <button class="small-action is-primary" data-watch-title="${item.title}" type="button" aria-label="Guarda ${item.title}, consigliato da ${viber.name}">Guarda</button>
+        <button class="small-action" data-share-title="${item.title}" type="button" aria-label="Apri feedback e ricambia il consiglio su ${item.title}">Ricambia</button>
       </div>
     </article>
   `;
@@ -748,7 +875,7 @@ function activityTemplate(activity, index) {
   const trustTag = isViberActivity ? `<span class="tag">fiducia ${viber.trust}%</span>` : "";
   const approvalTag = approvalCount > 0 ? `<span class="tag is-strong">rafforzato ${approvalCount}</span>` : "";
   const approveButton = isViberActivity
-    ? `<button class="small-action activity-approve${isApproved ? " is-approved" : ""}" data-approve-activity="${index}" type="button">${isApproved ? "Approvato" : "Approva"}</button>`
+    ? `<button class="small-action activity-approve${isApproved ? " is-approved" : ""}" data-approve-activity="${index}" type="button" aria-pressed="${isApproved}" aria-label="${isApproved ? "Consiglio gia approvato" : `Approva il consiglio di ${activity.actor}`}">${isApproved ? "Approvato" : "Approva"}</button>`
     : "";
   return `
     <article class="activity-card${isApproved ? " is-approved" : ""}">
@@ -766,16 +893,26 @@ function activityTemplate(activity, index) {
 
 function viberTemplate(viber) {
   const statusClass = viber.status === "away" ? "status-dot is-away" : "status-dot";
+  const statusCopy = viber.status === "away" ? "non disponibile" : "online";
   return `
-    <article class="viber-card">
-      <span class="viber-avatar" style="--viber-bg: ${viber.color}">${viber.initials}</span>
+    <article class="viber-card" aria-label="${viber.name}, ${viber.relation}, mood ${moodLabel(viber.mood)}, fiducia ${viber.trust}%, ${statusCopy}">
+      <span class="viber-avatar" style="--viber-bg: ${viber.color}" aria-hidden="true">${viber.initials}</span>
       <span>
         <strong>${viber.name}</strong>
         <p>${viber.relation} · mood ${moodLabel(viber.mood)}</p>
         <span class="trust-meter"><span style="width: ${viber.trust}%"></span></span>
       </span>
-      <span class="${statusClass}" title="${viber.status}"></span>
+      <span class="${statusClass}" title="${statusCopy}" aria-hidden="true"></span>
     </article>
+  `;
+}
+
+function emptyStateTemplate(title, copy) {
+  return `
+    <div class="empty-state" role="status">
+      <strong>${title}</strong>
+      <span>${copy}</span>
+    </div>
   `;
 }
 
@@ -818,7 +955,7 @@ function openPhoneRating(title) {
   renderStars();
   renderMoodPicker(phoneMoodPicker, "phone");
   renderViberPicker(phoneViberPicker, "phone");
-  ratingNotification.classList.add("is-open");
+  openDialog(ratingNotification, ".star-button");
 }
 
 function openTvRating(title) {
@@ -828,33 +965,37 @@ function openTvRating(title) {
   renderTvStars();
   renderMoodPicker(tvMoodPicker, "tv");
   renderViberPicker(tvViberPicker, "tv");
-  tvRatingOverlay.classList.add("is-open");
+  openDialog(tvRatingOverlay, ".tv-star-button");
 }
 
 function renderStars() {
+  starPicker.setAttribute("role", "group");
   starPicker.innerHTML = [1, 2, 3, 4, 5].map((value) => {
     const selected = value <= selectedRating ? " is-selected" : "";
-    return `<button class="star-button${selected}" data-rating="${value}" type="button" aria-label="${value} stelle">★</button>`;
+    return `<button class="star-button${selected}" data-rating="${value}" type="button" aria-pressed="${value === selectedRating}" aria-label="Imposta rating a ${value} stelle${value === selectedRating ? ", selezionato" : ""}">★</button>`;
   }).join("");
 
   document.querySelectorAll(".star-button").forEach((button) => {
     button.addEventListener("click", () => {
       selectedRating = Number(button.dataset.rating);
       renderStars();
+      starPicker.querySelector(`[data-rating="${selectedRating}"]`)?.focus({ preventScroll: true });
     });
   });
 }
 
 function renderTvStars() {
+  tvStarPicker.setAttribute("role", "group");
   tvStarPicker.innerHTML = [1, 2, 3, 4, 5].map((value) => {
     const selected = value <= selectedRating ? " is-selected" : "";
-    return `<button class="tv-star-button${selected}" data-tv-rating="${value}" type="button" aria-label="${value} stelle">★</button>`;
+    return `<button class="tv-star-button${selected}" data-tv-rating="${value}" type="button" aria-pressed="${value === selectedRating}" aria-label="Imposta rating TV a ${value} stelle${value === selectedRating ? ", selezionato" : ""}">★</button>`;
   }).join("");
 
   document.querySelectorAll("[data-tv-rating]").forEach((button) => {
     button.addEventListener("click", () => {
       selectedRating = Number(button.dataset.tvRating);
       renderTvStars();
+      tvStarPicker.querySelector(`[data-tv-rating="${selectedRating}"]`)?.focus({ preventScroll: true });
     });
   });
 }
@@ -863,12 +1004,16 @@ function renderMoodPicker(container, surface) {
   container.innerHTML = moodIds.map((mood) => {
     const selected = selectedMoods.includes(mood) ? " is-selected" : "";
     const disabled = !selected && selectedMoods.length >= maxMoodSelection ? " is-disabled" : "";
-    return `<button class="choice-chip${selected}${disabled}" data-mood-choice="${mood}" data-surface="${surface}" type="button">${moodLabel(mood)}</button>`;
+    return `<button class="choice-chip${selected}${disabled}" data-mood-choice="${mood}" data-surface="${surface}" type="button" aria-pressed="${selectedMoods.includes(mood)}" aria-disabled="${Boolean(disabled)}" aria-label="${moodLabel(mood)}${selectedMoods.includes(mood) ? ", selezionato" : ""}">${moodLabel(mood)}</button>`;
   }).join("");
 
   container.querySelectorAll("[data-mood-choice]").forEach((button) => {
     button.addEventListener("click", () => {
-      toggleMoodSelection(button.dataset.moodChoice, () => renderMoodPicker(container, surface));
+      const mood = button.dataset.moodChoice;
+      toggleMoodSelection(mood, () => {
+        renderMoodPicker(container, surface);
+        container.querySelector(`[data-mood-choice="${mood}"]`)?.focus({ preventScroll: true });
+      });
     });
   });
 }
@@ -879,7 +1024,7 @@ function renderViberPicker(container, surface) {
     const selected = viber.name === selectedViberName ? " is-selected" : "";
     return `
       <button class="viber-pick${selected}" data-viber-choice="${viber.name}" data-surface="${surface}" type="button">
-        <span class="viber-avatar" style="--viber-bg: ${viber.color}">${viber.initials}</span>
+        <span class="viber-avatar" style="--viber-bg: ${viber.color}" aria-hidden="true">${viber.initials}</span>
         <span>
           <strong>${viber.name}</strong>
           <span>fiducia ${viber.trust}%</span>
@@ -889,19 +1034,27 @@ function renderViberPicker(container, surface) {
   }).join("");
 
   container.querySelectorAll("[data-viber-choice]").forEach((button) => {
+    const viber = getViber(button.dataset.viberChoice);
+    const selected = button.dataset.viberChoice === selectedViberName;
+    button.setAttribute("aria-pressed", String(selected));
+    button.setAttribute("aria-label", `${viber.name}, fiducia ${viber.trust}%${selected ? ", selezionato" : ""}`);
+  });
+
+  container.querySelectorAll("[data-viber-choice]").forEach((button) => {
     button.addEventListener("click", () => {
       selectedViberName = button.dataset.viberChoice;
       renderViberPicker(container, surface);
+      container.querySelector(`[data-viber-choice="${selectedViberName}"]`)?.focus({ preventScroll: true });
     });
   });
 }
 
-function closeRating() {
-  ratingNotification.classList.remove("is-open");
+function closeRating(restoreFocus = true) {
+  closeDialog(ratingNotification, restoreFocus);
 }
 
-function closeTvRating() {
-  tvRatingOverlay.classList.remove("is-open");
+function closeTvRating(restoreFocus = true) {
+  closeDialog(tvRatingOverlay, restoreFocus);
 }
 
 function approveActivity(index) {
@@ -981,14 +1134,15 @@ function commitInteraction(kind) {
   });
 
   saveState();
-  closeRating();
-  closeTvRating();
+  closeRating(false);
+  closeTvRating(false);
   renderCommunity();
   showToast(kind === "watch" ? `Invito inviato a ${viber.name}.` : `Consiglio inviato a ${viber.name}.`);
+  restoreDialogFocus();
 }
 
 function schedulePhoneReminder() {
-  closeTvRating();
+  closeTvRating(false);
   communityState.activities.unshift({
     actor: "Vibely",
     text: `ti mandera un reminder telefono tra qualche ora per ${pendingTitle}`,
@@ -1046,8 +1200,12 @@ document.querySelectorAll("[data-bottom-nav]").forEach((button) => {
 
 document.querySelectorAll(".nav-tab[data-filter]").forEach((button) => {
   button.addEventListener("click", () => {
-    document.querySelectorAll(".nav-tab[data-filter]").forEach((tab) => tab.classList.remove("is-active"));
+    document.querySelectorAll(".nav-tab[data-filter]").forEach((tab) => {
+      tab.classList.remove("is-active");
+      tab.setAttribute("aria-pressed", "false");
+    });
     button.classList.add("is-active");
+    button.setAttribute("aria-pressed", "true");
     activeFilter = button.dataset.filter;
     renderCatalog();
   });
@@ -1055,8 +1213,12 @@ document.querySelectorAll(".nav-tab[data-filter]").forEach((button) => {
 
 document.querySelectorAll(".mood-chip").forEach((button) => {
   button.addEventListener("click", () => {
-    document.querySelectorAll(".mood-chip").forEach((chip) => chip.classList.remove("is-active"));
+    document.querySelectorAll(".mood-chip").forEach((chip) => {
+      chip.classList.remove("is-active");
+      chip.setAttribute("aria-pressed", "false");
+    });
     button.classList.add("is-active");
+    button.setAttribute("aria-pressed", "true");
     activeMood = button.dataset.mood;
     renderCatalog();
   });
@@ -1092,6 +1254,7 @@ document.querySelectorAll("[data-builder-mood]").forEach((button) => {
       viberProfile.moods = [...moods, mood];
     }
     button.classList.toggle("is-selected");
+    button.setAttribute("aria-pressed", String(button.classList.contains("is-selected")));
     updateBuilderPreview();
   });
 });
@@ -1105,6 +1268,7 @@ document.querySelectorAll("[data-builder-genre]").forEach((button) => {
       viberProfile.genres.push(genre);
     }
     button.classList.toggle("is-selected");
+    button.setAttribute("aria-pressed", String(button.classList.contains("is-selected")));
     updateBuilderPreview();
   });
 });
@@ -1118,6 +1282,13 @@ builderForm.addEventListener("submit", (event) => {
   saveViberProfile();
   profileGreeting.textContent = viberProfile.name;
   openHome(viberProfile.name);
+});
+
+document.addEventListener("keydown", (event) => {
+  keepFocusInDialog(event);
+  if (event.key === "Escape" && !activeDialog() && !builderView.classList.contains("hidden")) {
+    closeBuilderView();
+  }
 });
 
 renderStars();

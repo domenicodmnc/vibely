@@ -18,24 +18,24 @@
         <div class="profile-panel">
           <h1 id="profile-title">Chi guarda stasera?</h1>
           <div class="profiles" aria-label="Scegli profilo">
-            <button class="profile-card" data-profile="Filippo" type="button">
-              <span class="avatar avatar-one"></span>
+            <button class="profile-card" data-profile="Filippo" type="button" aria-label="Entra con il profilo Filippo">
+              <span class="avatar avatar-one" aria-hidden="true"></span>
               <span>Filippo</span>
             </button>
-            <button class="profile-card" data-profile="Carol" type="button">
-              <span class="avatar avatar-two"></span>
+            <button class="profile-card" data-profile="Carol" type="button" aria-label="Entra con il profilo Carol">
+              <span class="avatar avatar-two" aria-hidden="true"></span>
               <span>Carol</span>
             </button>
-            <button class="profile-card" data-profile="Domenico" type="button">
-              <span class="avatar avatar-three"></span>
+            <button class="profile-card" data-profile="Domenico" type="button" aria-label="Entra con il profilo Domenico">
+              <span class="avatar avatar-three" aria-hidden="true"></span>
               <span>Domenico</span>
             </button>
-            <button class="profile-card add-profile" type="button">
-              <span class="add-icon">+</span>
+            <button class="profile-card add-profile" type="button" aria-label="Aggiungi un nuovo profilo Viber">
+              <span class="add-icon" aria-hidden="true">+</span>
               <span>Aggiungi</span>
             </button>
-            <button id="openBuilderFromProfiles" class="profile-card edit-profile" type="button">
-              <span class="edit-icon">✎</span>
+            <button id="openBuilderFromProfiles" class="profile-card edit-profile" type="button" aria-label="Modifica il profilo Viber">
+              <span class="edit-icon" aria-hidden="true">✎</span>
               <span>Modifica</span>
             </button>
           </div>
@@ -49,7 +49,7 @@
             <span aria-hidden="true">‹</span>
           </button>
           <div class="wordmark">Vibely</div>
-          <button id="skipMoodEntry" class="topbar-skip" type="button">Salta</button>
+          <button id="skipMoodEntry" class="topbar-skip" type="button" aria-label="Salta la scelta del mood ed entra in Vibely">Salta</button>
         </header>
         <div class="mood-entry-shell">
           <p class="eyebrow">Prima di iniziare</p>
@@ -87,30 +87,30 @@
 
           <form id="builderForm" class="builder-form">
             <label class="field-label" for="builderName">Nome profilo</label>
-            <input id="builderName" class="text-field" type="text" value="Filippo" autocomplete="off" />
+            <input id="builderName" class="text-field" type="text" value="Filippo" autocomplete="off" aria-label="Nome profilo" />
 
             <div class="builder-group">
               <p class="field-label">Mood che ti rappresentano, massimo 3</p>
               <div class="builder-chips" aria-label="Mood preferiti">
-                <button class="builder-chip is-selected" data-builder-mood="deep" type="button">Deep</button>
-                <button class="builder-chip is-selected" data-builder-mood="chill" type="button">Chill</button>
-                <button class="builder-chip" data-builder-mood="adrenaline" type="button">Adrenalina</button>
-                <button class="builder-chip" data-builder-mood="comfort" type="button">Comfort</button>
-                <button class="builder-chip" data-builder-mood="romantic" type="button">Romantico</button>
-                <button class="builder-chip" data-builder-mood="dark" type="button">Dark</button>
-                <button class="builder-chip" data-builder-mood="mindblown" type="button">Mind-blown</button>
-                <button class="builder-chip" data-builder-mood="nostalgic" type="button">Nostalgico</button>
+                <button class="builder-chip is-selected" data-builder-mood="deep" type="button" aria-pressed="true">Deep</button>
+                <button class="builder-chip is-selected" data-builder-mood="chill" type="button" aria-pressed="true">Chill</button>
+                <button class="builder-chip" data-builder-mood="adrenaline" type="button" aria-pressed="false">Adrenalina</button>
+                <button class="builder-chip" data-builder-mood="comfort" type="button" aria-pressed="false">Comfort</button>
+                <button class="builder-chip" data-builder-mood="romantic" type="button" aria-pressed="false">Romantico</button>
+                <button class="builder-chip" data-builder-mood="dark" type="button" aria-pressed="false">Dark</button>
+                <button class="builder-chip" data-builder-mood="mindblown" type="button" aria-pressed="false">Mind-blown</button>
+                <button class="builder-chip" data-builder-mood="nostalgic" type="button" aria-pressed="false">Nostalgico</button>
               </div>
             </div>
 
             <div class="builder-group">
               <p class="field-label">Generi su cui vuoi consigli umani</p>
               <div class="builder-chips" aria-label="Generi preferiti">
-                <button class="builder-chip is-selected" data-builder-genre="Thriller" type="button">Thriller</button>
-                <button class="builder-chip" data-builder-genre="Comedy" type="button">Comedy</button>
-                <button class="builder-chip is-selected" data-builder-genre="Drama" type="button">Drama</button>
-                <button class="builder-chip" data-builder-genre="Sport" type="button">Sport</button>
-                <button class="builder-chip" data-builder-genre="Sci-fi" type="button">Sci-fi</button>
+                <button class="builder-chip is-selected" data-builder-genre="Thriller" type="button" aria-pressed="true">Thriller</button>
+                <button class="builder-chip" data-builder-genre="Comedy" type="button" aria-pressed="false">Comedy</button>
+                <button class="builder-chip is-selected" data-builder-genre="Drama" type="button" aria-pressed="true">Drama</button>
+                <button class="builder-chip" data-builder-genre="Sport" type="button" aria-pressed="false">Sport</button>
+                <button class="builder-chip" data-builder-genre="Sci-fi" type="button" aria-pressed="false">Sci-fi</button>
               </div>
             </div>
 
@@ -144,16 +144,17 @@
           </button>
           <div class="wordmark">Vibely</div>
           <nav class="nav-tabs" aria-label="Categorie">
-            <button class="nav-tab is-active" data-filter="all" type="button">Home</button>
-            <button class="nav-tab" data-filter="series" type="button">Serie</button>
-            <button class="nav-tab" data-filter="film" type="button">Film</button>
-            <button class="nav-tab" data-filter="sport" type="button">Sport</button>
+            <button class="nav-tab is-active" data-filter="all" type="button" aria-pressed="true">Home</button>
+            <button class="nav-tab" data-filter="series" type="button" aria-pressed="false">Serie</button>
+            <button class="nav-tab" data-filter="film" type="button" aria-pressed="false">Film</button>
+            <button class="nav-tab" data-filter="sport" type="button" aria-pressed="false">Sport</button>
             <a class="nav-tab nav-link nav-case-link" href="./ux.html">UX case</a>
             <a class="nav-tab nav-link nav-reminder-link" href="./ux.html#reminder">Reminder</a>
           </nav>
           <label class="search">
             <span aria-hidden="true">⌕</span>
-            <input id="searchInput" type="search" placeholder="Cerca" autocomplete="off" />
+            <span class="sr-only">Cerca nel catalogo Vibely</span>
+            <input id="searchInput" type="search" placeholder="Cerca" autocomplete="off" aria-label="Cerca nel catalogo Vibely" />
           </label>
         </header>
 
@@ -192,14 +193,14 @@
           <div class="section-head">
             <h2>Per il tuo mood</h2>
             <div class="mood-tabs" aria-label="Mood">
-              <button class="mood-chip is-active" data-mood="all" type="button">Tutto</button>
-              <button class="mood-chip" data-mood="chill" type="button">Chill</button>
-              <button class="mood-chip" data-mood="adrenaline" type="button">Adrenalina</button>
-              <button class="mood-chip" data-mood="deep" type="button">Deep</button>
-              <button class="mood-chip" data-mood="comfort" type="button">Comfort</button>
-              <button class="mood-chip" data-mood="dark" type="button">Dark</button>
-              <button class="mood-chip" data-mood="romantic" type="button">Romantico</button>
-              <button class="mood-chip" data-mood="mindblown" type="button">Mind-blown</button>
+              <button class="mood-chip is-active" data-mood="all" type="button" aria-pressed="true">Tutto</button>
+              <button class="mood-chip" data-mood="chill" type="button" aria-pressed="false">Chill</button>
+              <button class="mood-chip" data-mood="adrenaline" type="button" aria-pressed="false">Adrenalina</button>
+              <button class="mood-chip" data-mood="deep" type="button" aria-pressed="false">Deep</button>
+              <button class="mood-chip" data-mood="comfort" type="button" aria-pressed="false">Comfort</button>
+              <button class="mood-chip" data-mood="dark" type="button" aria-pressed="false">Dark</button>
+              <button class="mood-chip" data-mood="romantic" type="button" aria-pressed="false">Romantico</button>
+              <button class="mood-chip" data-mood="mindblown" type="button" aria-pressed="false">Mind-blown</button>
             </div>
           </div>
           <div id="posterGrid" class="poster-grid"></div>
@@ -230,43 +231,44 @@
         </section>
 
         <nav class="bottom-nav" aria-label="Navigazione principale">
-          <button class="bottom-nav-item is-active" data-bottom-nav="home" type="button">
+          <button class="bottom-nav-item is-active" data-bottom-nav="home" type="button" aria-label="Vai alla home" aria-pressed="true">
             <span class="bottom-nav-icon" aria-hidden="true">
               <svg viewBox="0 0 24 24"><path d="M4 10.5 12 4l8 6.5V20a1 1 0 0 1-1 1h-5v-6h-4v6H5a1 1 0 0 1-1-1z" /></svg>
             </span>
             <span>Home</span>
           </button>
-          <button class="bottom-nav-item" data-bottom-nav="community" type="button">
+          <button class="bottom-nav-item" data-bottom-nav="community" type="button" aria-label="Vai alla community" aria-pressed="false">
             <span class="bottom-nav-icon" aria-hidden="true">
               <svg viewBox="0 0 24 24"><path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm8 0a3 3 0 1 0 0-6 3 3 0 0 0 0 6ZM3.5 20c.5-3.2 2-5 4.5-5s4 1.8 4.5 5M11.5 20c.5-3.2 2-5 4.5-5s4 1.8 4.5 5" /></svg>
             </span>
             <span>Community</span>
           </button>
-          <a class="bottom-nav-item" href="./ux.html">
+          <a class="bottom-nav-item" href="./ux.html" aria-label="Apri il case study UX">
             <span class="bottom-nav-icon" aria-hidden="true">
               <svg viewBox="0 0 24 24"><path d="M4 20h4l11-11a2.8 2.8 0 0 0-4-4L4 16v4Zm11-14 3 3" /></svg>
             </span>
             <span>UX</span>
           </a>
-          <button class="bottom-nav-item" data-bottom-nav="profile" type="button">
+          <button class="bottom-nav-item" data-bottom-nav="profile" type="button" aria-label="Apri e modifica il profilo" aria-pressed="false">
             <span class="bottom-profile-face" aria-hidden="true"></span>
             <span>Profilo</span>
           </button>
         </nav>
 
-        <section id="ratingNotification" class="rating-notification" aria-live="polite" aria-label="Notifica rating">
-          <div class="notification-shell">
+        <section id="ratingNotification" class="rating-notification" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="ratingTitle" aria-describedby="ratingHelp" inert>
+          <div class="notification-shell" tabindex="-1">
             <button id="dismissRating" class="icon-button close-rating" type="button" aria-label="Chiudi" title="Chiudi">
               <span aria-hidden="true">×</span>
             </button>
             <p class="eyebrow">Ore dopo · telefono</p>
             <h2 id="ratingTitle">Com'e andata?</h2>
+            <p id="ratingHelp" class="sr-only">Scegli rating, fino a 3 mood, un Viber fidato e invia il consiglio. Premi Esc per chiudere.</p>
             <div id="starPicker" class="star-picker" aria-label="Rating"></div>
             <p class="field-label">Mood del consiglio, massimo 3</p>
             <div id="phoneMoodPicker" class="choice-row" aria-label="Mood del consiglio"></div>
             <p class="field-label">Consiglia a un Viber fidato</p>
             <div id="phoneViberPicker" class="viber-pick-list" aria-label="Viber fidati"></div>
-            <textarea id="recommendationNote" class="note-field" rows="3" placeholder="Aggiungi una nota, se vuoi"></textarea>
+            <textarea id="recommendationNote" class="note-field" rows="3" placeholder="Aggiungi una nota, se vuoi" aria-label="Nota opzionale per il consiglio"></textarea>
             <div class="notification-actions">
               <button id="sendRecommendation" class="primary-action" type="button">Consiglia</button>
               <button id="watchTogether" class="secondary-action" type="button">Guardiamolo insieme</button>
@@ -274,11 +276,11 @@
           </div>
         </section>
 
-        <section id="tvRatingOverlay" class="tv-rating-overlay" aria-live="polite" aria-label="Rating da TV">
-          <div class="tv-rating-card">
+        <section id="tvRatingOverlay" class="tv-rating-overlay" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="tvRatingTitle" aria-describedby="tvRatingHelp" inert>
+          <div class="tv-rating-card" tabindex="-1">
             <p class="eyebrow">Fine film · TV</p>
             <h2 id="tvRatingTitle">Com'e andata?</h2>
-            <p class="tv-helper">Usa il telecomando: scegli voto, mood e Viber. Niente testo da scrivere.</p>
+            <p id="tvRatingHelp" class="tv-helper">Usa il telecomando: scegli voto, mood e Viber. Niente testo da scrivere. Premi Esc per chiudere.</p>
             <div id="tvStarPicker" class="tv-star-picker" aria-label="Rating TV"></div>
             <p class="field-label">Mood, massimo 3</p>
             <div id="tvMoodPicker" class="choice-row tv-choice-row" aria-label="Mood TV"></div>
@@ -292,7 +294,8 @@
           </div>
         </section>
       </section>
-      <div id="appToast" class="app-toast" aria-live="polite"></div>
+      <div id="appToast" class="app-toast" role="status" aria-live="polite" aria-atomic="true"></div>
+      <div id="srStatus" class="sr-only" role="status" aria-live="polite" aria-atomic="true"></div>
     </main>
 
     <script src="./app.js"></script>
