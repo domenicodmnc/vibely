@@ -501,10 +501,17 @@ function showToast(message) {
 }
 
 function setBottomNavActive(target) {
-  document.querySelectorAll("[data-bottom-nav]").forEach((button) => {
-    const active = button.dataset.bottomNav === target;
-    button.classList.toggle("is-active", active);
-    button.setAttribute("aria-pressed", String(active));
+  document.querySelectorAll("[data-bottom-nav]").forEach((item) => {
+    const active = item.dataset.bottomNav === target;
+    item.classList.toggle("is-active", active);
+    if (item.tagName === "BUTTON") {
+      item.setAttribute("aria-pressed", String(active));
+      item.removeAttribute("aria-current");
+    } else if (active) {
+      item.setAttribute("aria-current", "page");
+    } else {
+      item.removeAttribute("aria-current");
+    }
   });
 }
 
@@ -1232,6 +1239,10 @@ searchInput.addEventListener("input", (event) => {
 
 function openInitialRouteFromHash() {
   const target = window.location.hash.replace("#", "");
+  if (target === "profiles") {
+    backToProfiles();
+    return;
+  }
   if (target === "home" || target === "communitySection") {
     enterHome(viberProfile.name || currentProfile, normaliseMoodList(viberProfile.moods));
     if (target === "communitySection") {
