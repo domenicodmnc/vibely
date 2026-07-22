@@ -63,22 +63,22 @@ const storageKey = "vibely-mvp-community-v1";
 const profileStorageKey = "vibely-mvp-viber-profile-v1";
 const maxMoodSelection = 3;
 const moodOptions = [
-  { id: "chill", label: "Chill", example: "Weekend leggero", color: "linear-gradient(135deg, #25324f, #37d6b5)" },
-  { id: "comfort", label: "Comfort", example: "Caldo e sicuro", color: "linear-gradient(135deg, #2c2f18, #f2c14e)" },
+  { id: "chill", label: "Chill", example: "Weekend leggero", color: "linear-gradient(135deg, #1f1f1f, #4d4d4d)" },
+  { id: "comfort", label: "Comfort", example: "Caldo e sicuro", color: "linear-gradient(135deg, #242424, #6b6b6b)" },
   { id: "deep", label: "Deep", example: "Lento ma intenso", color: "linear-gradient(135deg, #151515, #607d8b)" },
-  { id: "dark", label: "Dark", example: "Teso e notturno", color: "linear-gradient(135deg, #0f2027, #e7415f)" },
-  { id: "adrenaline", label: "Adrenalina", example: "Partita o action", color: "linear-gradient(135deg, #12351f, #f2c14e)" },
-  { id: "romantic", label: "Romantico", example: "Connessioni morbide", color: "linear-gradient(135deg, #3d1320, #d5a7ff)" },
-  { id: "mindblown", label: "Mind-blown", example: "Sci-fi e twist", color: "linear-gradient(135deg, #101827, #5c6dff)" },
-  { id: "nostalgic", label: "Nostalgico", example: "Ritorni e memoria", color: "linear-gradient(135deg, #144d52, #ff8a66)" }
+  { id: "dark", label: "Dark", example: "Teso e notturno", color: "linear-gradient(135deg, #050505, #262626)" },
+  { id: "adrenaline", label: "Adrenalina", example: "Partita o action", color: "linear-gradient(135deg, #1a1a1a, #595959)" },
+  { id: "romantic", label: "Romantico", example: "Connessioni morbide", color: "linear-gradient(135deg, #2a2a2a, #777777)" },
+  { id: "mindblown", label: "Mind-blown", example: "Sci-fi e twist", color: "linear-gradient(135deg, #181818, #4a4a4a)" },
+  { id: "nostalgic", label: "Nostalgico", example: "Ritorni e memoria", color: "linear-gradient(135deg, #202020, #606060)" }
 ];
 const moodIds = moodOptions.map((mood) => mood.id);
 
 const vibers = [
-  { name: "Elisa", initials: "EL", mood: "deep", trust: 96, relation: "Cinema nights", status: "online", color: "linear-gradient(135deg, #d5a7ff, #5c6dff)" },
-  { name: "Serena", initials: "SE", mood: "chill", trust: 91, relation: "Stessi gusti", status: "online", color: "linear-gradient(135deg, #37d6b5, #f2c14e)" },
-  { name: "Dario", initials: "DA", mood: "adrenaline", trust: 84, relation: "Sport e action", status: "away", color: "linear-gradient(135deg, #e7415f, #ff8a66)" },
-  { name: "Carol", initials: "CA", mood: "chill", trust: 78, relation: "Scoperte leggere", status: "online", color: "linear-gradient(135deg, #8aa9b8, #37d6b5)" }
+  { name: "Elisa", initials: "EL", mood: "deep", trust: 96, relation: "Cinema nights", status: "online", color: "linear-gradient(135deg, #f5f5f1, #5e5e5e)" },
+  { name: "Serena", initials: "SE", mood: "chill", trust: 91, relation: "Stessi gusti", status: "online", color: "linear-gradient(135deg, #d6d6d6, #404040)" },
+  { name: "Dario", initials: "DA", mood: "adrenaline", trust: 84, relation: "Sport e action", status: "away", color: "linear-gradient(135deg, #9a9a9a, #262626)" },
+  { name: "Carol", initials: "CA", mood: "chill", trust: 78, relation: "Scoperte leggere", status: "online", color: "linear-gradient(135deg, #c2c2c2, #545454)" }
 ];
 
 let viberProfile = loadViberProfile();
@@ -91,7 +91,7 @@ const items = [
     label: "Serie thriller",
     mood: "dark",
     moods: ["dark", "deep"],
-    gradient: "linear-gradient(135deg, #19334d, #e7415f)",
+    gradient: "linear-gradient(135deg, #101010, #3a3a3a)",
     description: "Una serie notturna tra mistero, amicizie fragili e una citta piena di segreti."
   },
   {
@@ -100,7 +100,7 @@ const items = [
     label: "Film drama",
     mood: "nostalgic",
     moods: ["nostalgic", "chill"],
-    gradient: "linear-gradient(135deg, #144d52, #37d6b5)",
+    gradient: "linear-gradient(135deg, #151515, #555555)",
     description: "Un ritorno al mare riapre vecchie promesse e scelte lasciate in sospeso."
   },
   {
@@ -109,7 +109,7 @@ const items = [
     label: "Sport live",
     mood: "adrenaline",
     moods: ["adrenaline"],
-    gradient: "linear-gradient(135deg, #12351f, #f2c14e)",
+    gradient: "linear-gradient(135deg, #181818, #666666)",
     description: "La rivalita piu accesa della stagione raccontata dentro e fuori dal campo."
   },
   {
@@ -118,7 +118,7 @@ const items = [
     label: "Docuserie",
     mood: "comfort",
     moods: ["comfort", "chill"],
-    gradient: "linear-gradient(135deg, #42245b, #ff8a66)",
+    gradient: "linear-gradient(135deg, #1f1f1f, #606060)",
     description: "Chef emergenti, cucine minuscole e menu che cambiano quartiere dopo quartiere."
   },
   {
@@ -127,7 +127,7 @@ const items = [
     label: "Sci-fi",
     mood: "mindblown",
     moods: ["mindblown", "deep"],
-    gradient: "linear-gradient(135deg, #101827, #5c6dff)",
+    gradient: "linear-gradient(135deg, #0f0f0f, #4a4a4a)",
     description: "Un ingegnere scopre che la citta orbitale in cui vive sta nascondendo un secondo sole."
   },
   {
@@ -136,7 +136,7 @@ const items = [
     label: "Reality",
     mood: "adrenaline",
     moods: ["adrenaline"],
-    gradient: "linear-gradient(135deg, #3d1320, #e7415f)",
+    gradient: "linear-gradient(135deg, #141414, #505050)",
     description: "Cinque runner preparano una gara impossibile mentre provano a rimettere ordine nelle loro vite."
   },
   {
@@ -145,7 +145,7 @@ const items = [
     label: "Romance",
     mood: "romantic",
     moods: ["romantic", "chill"],
-    gradient: "linear-gradient(135deg, #262b37, #d5a7ff)",
+    gradient: "linear-gradient(135deg, #202020, #747474)",
     description: "Una radio indipendente diventa il punto d'incontro per due persone che non si sono mai viste."
   },
   {
@@ -154,7 +154,7 @@ const items = [
     label: "Action",
     mood: "adrenaline",
     moods: ["adrenaline", "dark"],
-    gradient: "linear-gradient(135deg, #2c2f18, #d0f016)",
+    gradient: "linear-gradient(135deg, #171717, #5f5f5f)",
     description: "Un equipaggio trasporta l'unico carico che nessuno dovrebbe mai aprire."
   },
   {
@@ -172,7 +172,7 @@ const items = [
     label: "Sport",
     mood: "adrenaline",
     moods: ["adrenaline"],
-    gradient: "linear-gradient(135deg, #1c2333, #ffb703)",
+    gradient: "linear-gradient(135deg, #181818, #686868)",
     description: "Talenti di strada competono in una finale urbana dove ogni azione pesa."
   },
   {
@@ -190,7 +190,7 @@ const items = [
     label: "Comedy",
     mood: "comfort",
     moods: ["comfort", "chill"],
-    gradient: "linear-gradient(135deg, #25324f, #37d6b5)",
+    gradient: "linear-gradient(135deg, #1f1f1f, #4d4d4d)",
     description: "Tre amici provano a staccare da tutto, ma il fine settimana ha altri piani."
   }
 ];
@@ -199,86 +199,86 @@ const coverDetails = {
   "After Midnight": {
     code: "AM",
     kicker: "Night thriller",
-    accent: "#e7415f",
+    accent: "#d6d6d6",
     ink: "#f6f8ff",
     texture: "linear-gradient(150deg, rgba(255,255,255,0.18), transparent 34%), repeating-linear-gradient(90deg, rgba(255,255,255,0.1) 0 1px, transparent 1px 34px)"
   },
   "Low Tide": {
     code: "LT",
     kicker: "Coastal drama",
-    accent: "#37d6b5",
+    accent: "#d6d6d6",
     ink: "#f7fffb",
     texture: "radial-gradient(circle at 24% 32%, rgba(255,255,255,0.24), transparent 18%), linear-gradient(0deg, rgba(7,26,32,0.66), transparent 58%)"
   },
   "Final Whistle": {
     code: "90",
     kicker: "Last minute",
-    accent: "#f2c14e",
+    accent: "#d6d6d6",
     ink: "#fff8df",
-    texture: "repeating-linear-gradient(0deg, rgba(255,255,255,0.12) 0 2px, transparent 2px 26px), radial-gradient(circle at 76% 24%, rgba(242,193,78,0.34), transparent 22%)"
+    texture: "repeating-linear-gradient(0deg, rgba(255,255,255,0.12) 0 2px, transparent 2px 26px), radial-gradient(circle at 76% 24%, rgba(255,255,255,0.24), transparent 22%)"
   },
   "Neon Kitchen": {
     code: "NK",
     kicker: "Food stories",
-    accent: "#ff8a66",
+    accent: "#d6d6d6",
     ink: "#fff3ee",
-    texture: "radial-gradient(circle at 72% 20%, rgba(255,138,102,0.5), transparent 20%), repeating-linear-gradient(135deg, rgba(255,255,255,0.09) 0 1px, transparent 1px 18px)"
+    texture: "radial-gradient(circle at 72% 20%, rgba(255,255,255,0.24), transparent 20%), repeating-linear-gradient(135deg, rgba(255,255,255,0.09) 0 1px, transparent 1px 18px)"
   },
   "Orbit City": {
     code: "OC",
     kicker: "Sci-fi feature",
-    accent: "#8aa9ff",
+    accent: "#d6d6d6",
     ink: "#f3f6ff",
-    texture: "radial-gradient(circle at 72% 30%, rgba(255,255,255,0.5), transparent 8%), radial-gradient(circle at 50% 54%, rgba(92,109,255,0.42), transparent 28%)"
+    texture: "radial-gradient(circle at 72% 30%, rgba(255,255,255,0.36), transparent 8%), radial-gradient(circle at 50% 54%, rgba(255,255,255,0.18), transparent 28%)"
   },
   "Run Club": {
     code: "RC",
     kicker: "Reality sprint",
-    accent: "#e7415f",
+    accent: "#d6d6d6",
     ink: "#fff5f7",
     texture: "linear-gradient(115deg, transparent 0 42%, rgba(255,255,255,0.16) 42% 46%, transparent 46%), repeating-linear-gradient(90deg, rgba(255,255,255,0.08) 0 2px, transparent 2px 30px)"
   },
   "Soft Signal": {
     code: "SS",
     kicker: "Romance",
-    accent: "#d5a7ff",
+    accent: "#d6d6d6",
     ink: "#fff8ff",
-    texture: "radial-gradient(circle at 25% 26%, rgba(213,167,255,0.38), transparent 20%), linear-gradient(145deg, rgba(255,255,255,0.12), transparent 42%)"
+    texture: "radial-gradient(circle at 25% 26%, rgba(255,255,255,0.2), transparent 20%), linear-gradient(145deg, rgba(255,255,255,0.12), transparent 42%)"
   },
   "Cargo 17": {
     code: "17",
     kicker: "Action serial",
-    accent: "#d0f016",
+    accent: "#d6d6d6",
     ink: "#faffdf",
     texture: "repeating-linear-gradient(45deg, rgba(255,255,255,0.12) 0 2px, transparent 2px 18px), linear-gradient(180deg, transparent, rgba(0,0,0,0.52))"
   },
   "Glass House": {
     code: "GH",
     kicker: "Mystery",
-    accent: "#8aa9b8",
+    accent: "#d6d6d6",
     ink: "#f5fbff",
     texture: "linear-gradient(125deg, rgba(255,255,255,0.22), transparent 28%), repeating-linear-gradient(90deg, rgba(255,255,255,0.13) 0 1px, transparent 1px 46px)"
   },
   "Street Finals": {
     code: "SF",
     kicker: "Urban sport",
-    accent: "#ffb703",
+    accent: "#d6d6d6",
     ink: "#fff7dd",
-    texture: "radial-gradient(circle at 72% 30%, rgba(255,183,3,0.42), transparent 20%), repeating-linear-gradient(0deg, rgba(255,255,255,0.08) 0 1px, transparent 1px 22px)"
+    texture: "radial-gradient(circle at 72% 30%, rgba(255,255,255,0.22), transparent 20%), repeating-linear-gradient(0deg, rgba(255,255,255,0.08) 0 1px, transparent 1px 22px)"
   },
   "Quiet Room": {
     code: "QR",
     kicker: "Drama series",
-    accent: "#8aa9b8",
+    accent: "#d6d6d6",
     ink: "#f4f7fb",
-    texture: "linear-gradient(90deg, rgba(255,255,255,0.08), transparent 42%), radial-gradient(circle at 76% 18%, rgba(96,125,139,0.4), transparent 22%)"
+    texture: "linear-gradient(90deg, rgba(255,255,255,0.08), transparent 42%), radial-gradient(circle at 76% 18%, rgba(255,255,255,0.18), transparent 22%)"
   },
   "Weekend Mode": {
     code: "WM",
     kicker: "Comedy",
-    accent: "#37d6b5",
+    accent: "#d6d6d6",
     ink: "#f5fffb",
-    texture: "radial-gradient(circle at 20% 22%, rgba(55,214,181,0.4), transparent 22%), linear-gradient(135deg, rgba(255,255,255,0.16), transparent 34%)"
+    texture: "radial-gradient(circle at 20% 22%, rgba(255,255,255,0.2), transparent 22%), linear-gradient(135deg, rgba(255,255,255,0.16), transparent 34%)"
   }
 };
 
@@ -420,7 +420,7 @@ function getCoverDetails(item) {
   return coverDetails[item.title] || {
     code: item.title.slice(0, 2).toUpperCase(),
     kicker: item.label,
-    accent: "#37d6b5",
+    accent: "#d6d6d6",
     ink: "#f5f7fb",
     texture: "linear-gradient(135deg, rgba(255,255,255,0.14), transparent 36%)"
   };

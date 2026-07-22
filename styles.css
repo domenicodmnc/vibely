@@ -1,15 +1,15 @@
 :root {
   color-scheme: dark;
-  --bg: #08090d;
-  --panel: #10131a;
-  --panel-strong: #171b23;
-  --ink: #f5f7fb;
-  --muted: #a8afbd;
-  --soft: #687080;
-  --line: rgba(255, 255, 255, 0.13);
-  --accent: #e7415f;
-  --accent-2: #37d6b5;
-  --gold: #f2c14e;
+  --bg: #000000;
+  --panel: #141414;
+  --panel-strong: #1f1f1f;
+  --ink: #ffffff;
+  --muted: #b3b3b3;
+  --soft: #737373;
+  --line: rgba(255, 255, 255, 0.16);
+  --accent: #e50914;
+  --accent-2: #f5f5f1;
+  --gold: #d6d6d6;
   --radius: 8px;
   font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 }
@@ -70,7 +70,7 @@ button {
   padding: 88px 48px 72px;
   background:
     radial-gradient(circle at 50% 8%, rgba(255, 255, 255, 0.055), transparent 30%),
-    linear-gradient(180deg, #101116 0%, #08090d 58%, #050609 100%);
+    linear-gradient(180deg, #141414 0%, #000000 58%, #050505 100%);
   position: relative;
   overflow: hidden;
 }
@@ -230,15 +230,15 @@ button {
 }
 
 .avatar-one {
-  background: linear-gradient(145deg, #5c6dff, #151a35);
+  background: linear-gradient(145deg, #d8d8d8, #303030);
 }
 
 .avatar-two {
-  background: linear-gradient(145deg, #ff8a66, #3d1320);
+  background: linear-gradient(145deg, #9c9c9c, #1f1f1f);
 }
 
 .avatar-three {
-  background: linear-gradient(145deg, #37d6b5, #102b31);
+  background: linear-gradient(145deg, #f5f5f1, #3a3a3a);
 }
 
 .add-icon {
@@ -287,9 +287,9 @@ button {
   min-height: 100dvh;
   overflow: hidden;
   background:
-    radial-gradient(circle at 18% 18%, rgba(55, 214, 181, 0.22), transparent 28%),
-    radial-gradient(circle at 82% 22%, rgba(242, 193, 78, 0.16), transparent 24%),
-    linear-gradient(140deg, #0c1017 0%, #08090d 72%);
+    radial-gradient(circle at 18% 18%, rgba(255, 255, 255, 0.08), transparent 28%),
+    radial-gradient(circle at 82% 22%, rgba(229, 9, 20, 0.12), transparent 24%),
+    linear-gradient(140deg, #141414 0%, #000000 72%);
 }
 
 .mood-entry-shell {
@@ -354,7 +354,10 @@ button {
 
 .mood-card.is-selected {
   border-color: var(--accent-2);
-  box-shadow: inset 0 0 0 2px rgba(55, 214, 181, 0.38);
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.06)),
+    var(--mood-bg);
+  box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.38);
 }
 
 .mood-card.is-selected::after {
@@ -396,9 +399,9 @@ button {
 .builder-view {
   min-height: 100vh;
   background:
-    radial-gradient(circle at 14% 18%, rgba(55, 214, 181, 0.22), transparent 28%),
-    radial-gradient(circle at 82% 24%, rgba(231, 65, 95, 0.18), transparent 28%),
-    linear-gradient(140deg, #0c1017 0%, #08090d 70%);
+    radial-gradient(circle at 14% 18%, rgba(255, 255, 255, 0.08), transparent 28%),
+    radial-gradient(circle at 82% 24%, rgba(229, 9, 20, 0.14), transparent 28%),
+    linear-gradient(140deg, #141414 0%, #000000 70%);
 }
 
 .builder-topbar {
@@ -474,7 +477,7 @@ button {
 .preview-avatar {
   width: 58px;
   height: 58px;
-  background: linear-gradient(135deg, var(--accent-2), var(--gold));
+  background: linear-gradient(135deg, #f5f5f1, #5c5c5c);
 }
 
 .viber-preview strong {
@@ -571,7 +574,7 @@ button {
   min-height: 100vh;
   width: 100%;
   overflow-x: hidden;
-  background: linear-gradient(180deg, #07080b 0%, #0d1118 52%, #08090d 100%);
+  background: linear-gradient(180deg, #000000 0%, #111111 52%, #000000 100%);
 }
 
 .topbar {
@@ -632,8 +635,8 @@ button {
 .nav-tab.is-active,
 .mood-chip.is-active {
   color: var(--ink);
-  background: rgba(255, 255, 255, 0.12);
-  box-shadow: inset 0 -3px 0 var(--accent-2);
+  background: rgba(255, 255, 255, 0.16);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.18);
 }
 
 .nav-link {
@@ -642,15 +645,15 @@ button {
 }
 
 .nav-case-link {
-  border-color: rgba(55, 214, 181, 0.36);
-  color: var(--accent-2);
-  background: rgba(55, 214, 181, 0.08);
+  border-color: rgba(255, 255, 255, 0.26);
+  color: #d6d6d6;
+  background: rgba(255, 255, 255, 0.06);
 }
 
 .nav-reminder-link {
-  border-color: rgba(242, 193, 78, 0.34);
-  color: var(--gold);
-  background: rgba(242, 193, 78, 0.08);
+  border-color: rgba(255, 255, 255, 0.22);
+  color: #d6d6d6;
+  background: rgba(255, 255, 255, 0.06);
 }
 
 .search {
@@ -707,8 +710,8 @@ button {
   position: absolute;
   inset: 0;
   background:
-    linear-gradient(90deg, rgba(8, 9, 13, 0.95) 0%, rgba(8, 9, 13, 0.58) 42%, rgba(8, 9, 13, 0.08) 100%),
-    linear-gradient(0deg, rgba(8, 9, 13, 1), rgba(8, 9, 13, 0) 40%);
+    linear-gradient(90deg, rgba(0, 0, 0, 0.95) 0%, rgba(0, 0, 0, 0.58) 42%, rgba(0, 0, 0, 0.08) 100%),
+    linear-gradient(0deg, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0) 40%);
   pointer-events: none;
 }
 
@@ -716,17 +719,17 @@ button {
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(circle at 74% 38%, rgba(242, 193, 78, 0.26), transparent 18%),
-    radial-gradient(circle at 78% 30%, rgba(55, 214, 181, 0.32), transparent 16%),
-    linear-gradient(125deg, #151e2a 0%, #0a0e14 40%, #301721 100%);
+    radial-gradient(circle at 74% 38%, rgba(255, 255, 255, 0.1), transparent 18%),
+    radial-gradient(circle at 78% 30%, rgba(255, 255, 255, 0.08), transparent 16%),
+    linear-gradient(125deg, #191919 0%, #080808 40%, #141414 100%);
 }
 
 .poster-hero-art {
   background:
-    linear-gradient(90deg, rgba(8, 9, 13, 0.98) 0%, rgba(8, 9, 13, 0.72) 30%, rgba(8, 9, 13, 0.12) 72%, rgba(8, 9, 13, 0.3) 100%),
-    linear-gradient(0deg, rgba(8, 9, 13, 1) 0%, rgba(8, 9, 13, 0.54) 24%, rgba(8, 9, 13, 0) 56%),
+    linear-gradient(90deg, rgba(0, 0, 0, 0.98) 0%, rgba(0, 0, 0, 0.72) 30%, rgba(0, 0, 0, 0.12) 72%, rgba(0, 0, 0, 0.3) 100%),
+    linear-gradient(0deg, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0.54) 24%, rgba(0, 0, 0, 0) 56%),
     url("./assets/posters/after-midnight.jpg"),
-    linear-gradient(125deg, #151e2a 0%, #0a0e14 40%, #301721 100%);
+    linear-gradient(125deg, #191919 0%, #080808 40%, #141414 100%);
   background-position: center, center, center right 20%, center;
   background-size: cover, cover, cover, cover;
   background-repeat: no-repeat;
@@ -744,7 +747,7 @@ button {
   background:
     linear-gradient(130deg, rgba(255, 255, 255, 0.18), transparent 40%),
     radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.16), transparent 36%);
-  box-shadow: 0 0 120px rgba(55, 214, 181, 0.22);
+  box-shadow: 0 0 120px rgba(255, 255, 255, 0.08);
   transform: rotate(-16deg);
 }
 
@@ -760,13 +763,13 @@ button {
 
 .beam-one {
   top: 27%;
-  background: linear-gradient(90deg, transparent, rgba(231, 65, 95, 0.68), transparent);
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.16), transparent);
   transform: rotate(-18deg);
 }
 
 .beam-two {
   top: 46%;
-  background: linear-gradient(90deg, transparent, rgba(55, 214, 181, 0.58), transparent);
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.12), transparent);
   transform: rotate(13deg);
 }
 
@@ -1157,7 +1160,7 @@ button {
   position: relative;
   display: block;
   border-radius: 8px;
-  background: linear-gradient(145deg, #37d6b5, #102b31);
+  background: linear-gradient(145deg, #f5f5f1, #3a3a3a);
   box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.18);
 }
 
@@ -1188,8 +1191,8 @@ button {
 
 .bottom-nav-item.is-active {
   color: var(--ink);
-  background: rgba(255, 255, 255, 0.12);
-  box-shadow: inset 0 -3px 0 var(--accent-2);
+  background: rgba(255, 255, 255, 0.16);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.18);
 }
 
 .social-head {
@@ -1425,8 +1428,8 @@ button {
 }
 
 .activity-card.is-approved {
-  border-color: rgba(55, 214, 181, 0.42);
-  background: rgba(55, 214, 181, 0.08);
+  border-color: rgba(255, 255, 255, 0.34);
+  background: rgba(255, 255, 255, 0.08);
 }
 
 .activity-card strong,
@@ -1453,13 +1456,13 @@ button {
   border-color: transparent;
   color: #08090d;
   background: var(--accent-2);
-  box-shadow: inset 0 -3px 0 rgba(8, 9, 13, 0.28);
+  box-shadow: inset 0 -3px 0 rgba(0, 0, 0, 0.28);
 }
 
 .tag.is-strong {
-  border-color: rgba(242, 193, 78, 0.38);
+  border-color: rgba(255, 255, 255, 0.28);
   color: var(--gold);
-  background: rgba(242, 193, 78, 0.08);
+  background: rgba(255, 255, 255, 0.07);
 }
 
 .mini-head {
@@ -1517,7 +1520,7 @@ button {
   display: block;
   height: 100%;
   border-radius: inherit;
-  background: linear-gradient(90deg, var(--accent-2), var(--gold));
+  background: linear-gradient(90deg, #f5f5f1, #8c8c8c);
 }
 
 .status-dot {
@@ -1525,12 +1528,12 @@ button {
   height: 8px;
   border-radius: 999px;
   background: var(--accent-2);
-  box-shadow: 0 0 0 4px rgba(55, 214, 181, 0.12);
+  box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.08);
 }
 
 .status-dot.is-away {
   background: var(--gold);
-  box-shadow: 0 0 0 4px rgba(242, 193, 78, 0.12);
+  box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.08);
 }
 
 .rating-notification {
@@ -1655,8 +1658,8 @@ button {
 
 .viber-pick.is-selected {
   border-color: var(--accent-2);
-  background: rgba(55, 214, 181, 0.13);
-  box-shadow: inset 0 0 0 2px rgba(55, 214, 181, 0.28);
+  background: rgba(255, 255, 255, 0.12);
+  box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.24);
 }
 
 .viber-pick.is-selected::after {
@@ -1727,7 +1730,7 @@ button {
   place-items: center;
   padding: 32px;
   background:
-    radial-gradient(circle at 78% 20%, rgba(55, 214, 181, 0.22), transparent 25%),
+    radial-gradient(circle at 78% 20%, rgba(255, 255, 255, 0.09), transparent 25%),
     rgba(3, 4, 7, 0.88);
   opacity: 0;
   pointer-events: none;
@@ -1888,13 +1891,13 @@ textarea:focus-visible,
 [tabindex]:focus-visible {
   outline: 3px solid var(--accent-2);
   outline-offset: 3px;
-  box-shadow: 0 0 0 6px rgba(55, 214, 181, 0.22);
+  box-shadow: 0 0 0 6px rgba(255, 255, 255, 0.18);
 }
 
 .profile-card:focus-visible {
   outline: 3px solid var(--accent-2);
   outline-offset: 6px;
-  box-shadow: 0 0 0 8px rgba(55, 214, 181, 0.18);
+  box-shadow: 0 0 0 8px rgba(255, 255, 255, 0.14);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -1910,9 +1913,9 @@ textarea:focus-visible,
 
 .ux-case-page {
   background:
-    radial-gradient(circle at 18% 4%, rgba(55, 214, 181, 0.16), transparent 26%),
-    radial-gradient(circle at 84% 8%, rgba(231, 65, 95, 0.14), transparent 24%),
-    linear-gradient(180deg, #07080b 0%, #10131a 48%, #08090d 100%);
+    radial-gradient(circle at 18% 4%, rgba(255, 255, 255, 0.08), transparent 26%),
+    radial-gradient(circle at 84% 8%, rgba(229, 9, 20, 0.12), transparent 24%),
+    linear-gradient(180deg, #000000 0%, #141414 48%, #000000 100%);
 }
 
 .ux-case {
@@ -2290,7 +2293,7 @@ textarea:focus-visible,
   border-radius: var(--radius);
   color: var(--ink);
   background:
-    linear-gradient(135deg, rgba(55, 214, 181, 0.13), rgba(255, 255, 255, 0.035)),
+    linear-gradient(135deg, rgba(255, 255, 255, 0.11), rgba(255, 255, 255, 0.035)),
     rgba(16, 19, 26, 0.72);
   text-align: center;
   padding: 10px;
@@ -2800,7 +2803,7 @@ textarea:focus-visible,
     inset: auto 0 0;
     height: 42%;
     background:
-      radial-gradient(ellipse at 50% 100%, rgba(242, 193, 78, 0.22), transparent 42%),
+      radial-gradient(ellipse at 50% 100%, rgba(255, 255, 255, 0.12), transparent 42%),
       linear-gradient(180deg, transparent, rgba(8, 9, 13, 0.78));
     opacity: 1;
   }
