@@ -8,8 +8,8 @@
   --soft: #737373;
   --line: rgba(255, 255, 255, 0.16);
   --accent: #e50914;
-  --accent-2: #f5f5f1;
-  --gold: #d6d6d6;
+  --accent-2: #d8d8d8;
+  --gold: #c8c8c8;
   --radius: 8px;
   font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 }
@@ -654,6 +654,52 @@ button {
   border-color: rgba(255, 255, 255, 0.22);
   color: #d6d6d6;
   background: rgba(255, 255, 255, 0.06);
+}
+
+.nav-tab,
+.mood-chip,
+.bottom-nav-item,
+.nav-link,
+.nav-case-link,
+.nav-reminder-link,
+.ux-nav-cta {
+  -webkit-tap-highlight-color: rgba(255, 255, 255, 0.14);
+}
+
+.nav-tab:hover,
+.nav-tab:active,
+.nav-tab:focus-visible,
+.nav-tab.is-active,
+.mood-chip:hover,
+.mood-chip:active,
+.mood-chip:focus-visible,
+.mood-chip.is-active,
+.bottom-nav-item:hover,
+.bottom-nav-item:active,
+.bottom-nav-item:focus-visible,
+.bottom-nav-item.is-active {
+  border-color: rgba(255, 255, 255, 0.24) !important;
+  color: #ffffff !important;
+  background: rgba(255, 255, 255, 0.16) !important;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.18) !important;
+}
+
+.nav-case-link,
+.nav-reminder-link,
+.nav-case-link:hover,
+.nav-case-link:active,
+.nav-case-link:focus-visible,
+.nav-reminder-link:hover,
+.nav-reminder-link:active,
+.nav-reminder-link:focus-visible,
+.ux-nav-cta,
+.ux-nav-cta:hover,
+.ux-nav-cta:active,
+.ux-nav-cta:focus-visible {
+  border-color: rgba(255, 255, 255, 0.24) !important;
+  color: #e6e6e6 !important;
+  background: rgba(255, 255, 255, 0.08) !important;
+  box-shadow: none !important;
 }
 
 .search {
