@@ -1180,6 +1180,7 @@ document.querySelector("#heroPlayButton").addEventListener("click", () => openPl
 document.querySelector("#simulateFinish")?.addEventListener("click", () => openTvRating(activeTitle));
 document.querySelector("#simulatePhoneReminder")?.addEventListener("click", () => openPhoneRating(activeTitle));
 document.querySelector("#dismissRating").addEventListener("click", closeRating);
+document.querySelector("#dismissTvRating").addEventListener("click", closeTvRating);
 document.querySelector("#sendRecommendation").addEventListener("click", () => commitInteraction("recommend"));
 document.querySelector("#watchTogether").addEventListener("click", () => commitInteraction("watch"));
 document.querySelector("#tvSendRecommendation").addEventListener("click", () => commitInteraction("recommend"));

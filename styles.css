@@ -1847,6 +1847,7 @@ a:hover {
 }
 
 .tv-rating-card {
+  position: relative;
   width: min(860px, 100%);
   max-height: min(720px, calc(100dvh - 48px));
   overflow-y: auto;
@@ -1856,6 +1857,16 @@ a:hover {
   box-shadow: 0 30px 100px rgba(0, 0, 0, 0.62);
   padding: clamp(18px, 2.2vw, 28px);
   scrollbar-width: none;
+}
+
+.close-tv-rating {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  z-index: 2;
+  width: 48px;
+  height: 48px;
+  font-size: 28px;
 }
 
 .tv-rating-card::-webkit-scrollbar {

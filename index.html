@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Vibely MVP</title>
-    <link rel="stylesheet" href="./styles.css?v=vibely-ui-10" />
+    <link rel="stylesheet" href="./styles.css?v=vibely-ui-11" />
   </head>
   <body>
     <main id="app" class="app">
@@ -278,6 +278,9 @@
 
         <section id="tvRatingOverlay" class="tv-rating-overlay" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="tvRatingTitle" aria-describedby="tvRatingHelp" inert>
           <div class="tv-rating-card" tabindex="-1">
+            <button id="dismissTvRating" class="icon-button close-tv-rating" type="button" aria-label="Chiudi pannello rating TV" title="Chiudi">
+              <span aria-hidden="true">×</span>
+            </button>
             <p class="eyebrow">Fine film · TV</p>
             <h2 id="tvRatingTitle">Com'e andata?</h2>
             <p id="tvRatingHelp" class="tv-helper">Usa il telecomando: scegli voto, mood e Viber. Niente testo da scrivere. Premi Esc per chiudere.</p>
@@ -298,6 +301,6 @@
       <div id="srStatus" class="sr-only" role="status" aria-live="polite" aria-atomic="true"></div>
     </main>
 
-    <script src="./app.js?v=vibely-ui-10"></script>
+    <script src="./app.js?v=vibely-ui-11"></script>
   </body>
 </html>
