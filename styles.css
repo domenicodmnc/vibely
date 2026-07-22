@@ -2613,13 +2613,13 @@ textarea:focus-visible,
   }
 
   .bottom-nav {
-    position: static;
-    left: auto;
-    bottom: auto;
-    transform: none;
+    position: fixed;
+    left: 50%;
+    bottom: 18px;
+    transform: translateX(-50%);
     width: min(520px, calc(100vw - 48px));
     min-height: 58px;
-    margin: 24px auto 0;
+    margin: 0;
     padding: 6px;
   }
 
