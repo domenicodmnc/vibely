@@ -63,22 +63,22 @@ const storageKey = "vibely-mvp-community-v1";
 const profileStorageKey = "vibely-mvp-viber-profile-v1";
 const maxMoodSelection = 3;
 const moodOptions = [
-  { id: "chill", label: "Chill", example: "Weekend leggero", color: "linear-gradient(135deg, #1f1f1f, #4d4d4d)" },
-  { id: "comfort", label: "Comfort", example: "Caldo e sicuro", color: "linear-gradient(135deg, #242424, #6b6b6b)" },
-  { id: "deep", label: "Deep", example: "Lento ma intenso", color: "linear-gradient(135deg, #151515, #4f4f4f)" },
-  { id: "dark", label: "Dark", example: "Teso e notturno", color: "linear-gradient(135deg, #050505, #262626)" },
-  { id: "adrenaline", label: "Adrenalina", example: "Partita o action", color: "linear-gradient(135deg, #1a1a1a, #595959)" },
-  { id: "romantic", label: "Romantico", example: "Connessioni morbide", color: "linear-gradient(135deg, #2a2a2a, #777777)" },
-  { id: "mindblown", label: "Mind-blown", example: "Sci-fi e twist", color: "linear-gradient(135deg, #181818, #4a4a4a)" },
-  { id: "nostalgic", label: "Nostalgico", example: "Ritorni e memoria", color: "linear-gradient(135deg, #202020, #606060)" }
+  { id: "chill", label: "Chill", example: "Weekend leggero", color: "linear-gradient(135deg, #143b4a, #2f8f9d)" },
+  { id: "comfort", label: "Comfort", example: "Caldo e sicuro", color: "linear-gradient(135deg, #5a3518, #d6a23f)" },
+  { id: "deep", label: "Deep", example: "Lento ma intenso", color: "linear-gradient(135deg, #171b3f, #6d5dfc)" },
+  { id: "dark", label: "Dark", example: "Teso e notturno", color: "linear-gradient(135deg, #130b10, #9f1838)" },
+  { id: "adrenaline", label: "Adrenalina", example: "Partita o action", color: "linear-gradient(135deg, #421212, #e50914)" },
+  { id: "romantic", label: "Romantico", example: "Connessioni morbide", color: "linear-gradient(135deg, #3d1635, #cf6fb3)" },
+  { id: "mindblown", label: "Mind-blown", example: "Sci-fi e twist", color: "linear-gradient(135deg, #111b3c, #4f7cff)" },
+  { id: "nostalgic", label: "Nostalgico", example: "Ritorni e memoria", color: "linear-gradient(135deg, #3a2318, #c86f3d)" }
 ];
 const moodIds = moodOptions.map((mood) => mood.id);
 
 const vibers = [
-  { name: "Elisa", initials: "EL", mood: "deep", trust: 96, relation: "Cinema nights", status: "online", color: "linear-gradient(135deg, #f5f5f1, #5e5e5e)" },
-  { name: "Serena", initials: "SE", mood: "chill", trust: 91, relation: "Stessi gusti", status: "online", color: "linear-gradient(135deg, #d6d6d6, #404040)" },
-  { name: "Dario", initials: "DA", mood: "adrenaline", trust: 84, relation: "Sport e action", status: "away", color: "linear-gradient(135deg, #9a9a9a, #262626)" },
-  { name: "Carol", initials: "CA", mood: "chill", trust: 78, relation: "Scoperte leggere", status: "online", color: "linear-gradient(135deg, #c2c2c2, #545454)" }
+  { name: "Elisa", initials: "EL", mood: "deep", trust: 96, relation: "Cinema nights", status: "online", color: "linear-gradient(135deg, #b79cff, #5b55ff)" },
+  { name: "Serena", initials: "SE", mood: "chill", trust: 91, relation: "Stessi gusti", status: "online", color: "linear-gradient(135deg, #ffd36a, #f15bb5)" },
+  { name: "Dario", initials: "DA", mood: "adrenaline", trust: 84, relation: "Sport e action", status: "away", color: "linear-gradient(135deg, #ff5c5c, #e50914)" },
+  { name: "Carol", initials: "CA", mood: "chill", trust: 78, relation: "Scoperte leggere", status: "online", color: "linear-gradient(135deg, #62d6ff, #2f80ed)" }
 ];
 
 let viberProfile = loadViberProfile();
