@@ -1053,7 +1053,8 @@ a:hover {
 .rank-number {
   position: absolute;
   left: 8px;
-  bottom: 66px;
+  top: 154px;
+  bottom: auto;
   z-index: 3;
   width: 54px;
   height: 54px;
@@ -2554,7 +2555,8 @@ textarea:focus-visible,
   }
 
   .rank-number {
-    bottom: 50px;
+    top: 82px;
+    bottom: auto;
     width: 42px;
     height: 42px;
     font-size: 24px;
