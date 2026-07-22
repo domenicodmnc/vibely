@@ -2043,16 +2043,18 @@ textarea:focus-visible,
 .ux-case {
   width: min(1240px, calc(100% - 36px));
   margin: 0 auto;
-  padding: 0 0 132px;
+  padding: 68px 0 132px;
 }
 
 .ux-case-nav {
-  position: sticky;
+  position: fixed;
   top: 0;
+  left: 0;
+  right: 0;
   z-index: 12;
   min-height: 68px;
-  width: 100vw;
-  margin-left: calc(50% - 50vw);
+  width: 100%;
+  margin-left: 0;
   padding: 0 max(18px, calc((100vw - 1240px) / 2));
   display: flex;
   align-items: center;
@@ -3142,10 +3144,11 @@ textarea:focus-visible,
 
   .ux-case {
     width: min(100% - 28px, 680px);
+    padding-top: 112px;
   }
 
   .ux-case-nav {
-    position: sticky;
+    position: fixed;
     align-items: flex-start;
     flex-direction: column;
     gap: 8px;
