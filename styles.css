@@ -607,9 +607,11 @@ a:hover {
 }
 
 .topbar {
-  position: sticky;
+  position: fixed;
   top: 0;
-  z-index: 8;
+  left: 0;
+  right: 0;
+  z-index: 28;
   width: 100%;
   max-width: 100%;
   display: grid;
@@ -621,7 +623,7 @@ a:hover {
   background: linear-gradient(180deg, rgba(0, 0, 0, 0.96), rgba(0, 0, 0, 0.74));
   border-bottom: 0;
   backdrop-filter: blur(12px);
-  overflow: hidden;
+  overflow: visible;
 }
 
 .wordmark {
@@ -989,6 +991,10 @@ a:hover {
   justify-content: space-between;
   gap: 16px;
   margin: 20px 0 14px;
+}
+
+#catalogSection {
+  scroll-margin-top: 90px;
 }
 
 .section-head h2 {
@@ -3036,7 +3042,7 @@ textarea:focus-visible,
     width: 100%;
     max-width: 100vw;
     min-height: 620px;
-    padding: 84px 22px 42px;
+    padding: 178px 22px 42px;
   }
 
   .hero h1 {
@@ -3066,6 +3072,10 @@ textarea:focus-visible,
     max-width: 100vw;
     padding-inline: 22px;
     overflow: hidden;
+  }
+
+  #catalogSection {
+    scroll-margin-top: 168px;
   }
 
   .social-layout,

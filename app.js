@@ -30,6 +30,7 @@ const previewAvatar = document.querySelector("#previewAvatar");
 const previewName = document.querySelector("#previewName");
 const previewSummary = document.querySelector("#previewSummary");
 const communitySection = document.querySelector("#communitySection");
+const catalogSection = document.querySelector("#catalogSection");
 const appToast = document.querySelector("#appToast");
 const srStatus = document.querySelector("#srStatus");
 
@@ -523,6 +524,10 @@ function scrollHomeToTop() {
 function scrollToCommunity() {
   setBottomNavActive("community");
   communitySection.scrollIntoView({ behavior: prefersReducedMotion() ? "auto" : "smooth", block: "start" });
+}
+
+function scrollToCatalog() {
+  catalogSection.scrollIntoView({ behavior: prefersReducedMotion() ? "auto" : "smooth", block: "start" });
 }
 
 function prefersReducedMotion() {
@@ -1216,6 +1221,12 @@ document.querySelectorAll(".nav-tab[data-filter]").forEach((button) => {
     button.setAttribute("aria-pressed", "true");
     activeFilter = button.dataset.filter;
     renderCatalog();
+    if (activeFilter === "all") {
+      scrollHomeToTop();
+    } else {
+      setBottomNavActive("home");
+      scrollToCatalog();
+    }
   });
 });
 
