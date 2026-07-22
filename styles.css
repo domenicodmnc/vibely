@@ -552,8 +552,7 @@ a:hover {
   padding-left: 30px;
 }
 
-.builder-chip.is-selected::before,
-.choice-chip.is-selected::before {
+.builder-chip.is-selected::before {
   content: "";
   position: absolute;
   left: 13px;
@@ -1731,7 +1730,7 @@ a:hover {
   border-color: transparent;
   color: var(--ink);
   background: var(--accent);
-  padding-left: 30px;
+  padding-left: 14px;
 }
 
 .choice-chip.is-disabled {
