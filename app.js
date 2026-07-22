@@ -65,7 +65,7 @@ const maxMoodSelection = 3;
 const moodOptions = [
   { id: "chill", label: "Chill", example: "Weekend leggero", color: "linear-gradient(135deg, #1f1f1f, #4d4d4d)" },
   { id: "comfort", label: "Comfort", example: "Caldo e sicuro", color: "linear-gradient(135deg, #242424, #6b6b6b)" },
-  { id: "deep", label: "Deep", example: "Lento ma intenso", color: "linear-gradient(135deg, #151515, #607d8b)" },
+  { id: "deep", label: "Deep", example: "Lento ma intenso", color: "linear-gradient(135deg, #151515, #4f4f4f)" },
   { id: "dark", label: "Dark", example: "Teso e notturno", color: "linear-gradient(135deg, #050505, #262626)" },
   { id: "adrenaline", label: "Adrenalina", example: "Partita o action", color: "linear-gradient(135deg, #1a1a1a, #595959)" },
   { id: "romantic", label: "Romantico", example: "Connessioni morbide", color: "linear-gradient(135deg, #2a2a2a, #777777)" },
@@ -163,7 +163,7 @@ const items = [
     label: "Mystery",
     mood: "dark",
     moods: ["dark", "deep"],
-    gradient: "linear-gradient(135deg, #0f2027, #8aa9b8)",
+    gradient: "linear-gradient(135deg, #101010, #626262)",
     description: "Una villa trasparente, una cena di famiglia e una verita che tutti vedono ma nessuno nomina."
   },
   {
@@ -181,7 +181,7 @@ const items = [
     label: "Drama",
     mood: "deep",
     moods: ["deep"],
-    gradient: "linear-gradient(135deg, #151515, #607d8b)",
+    gradient: "linear-gradient(135deg, #151515, #4f4f4f)",
     description: "In uno studio di terapia, ogni episodio svela un dettaglio che cambia tutta la storia."
   },
   {
